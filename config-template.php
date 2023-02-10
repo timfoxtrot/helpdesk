@@ -8,7 +8,7 @@
 
 
 //Server URL
-$server_url = "https://192.168.1.100/helpdesk";
+$server_url = "IP/helpdesk";
 
 class MyDB extends CMySql{
 	function __construct(){
