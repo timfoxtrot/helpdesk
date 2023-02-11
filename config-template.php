@@ -13,10 +13,10 @@ $server_url = "IP/helpdesk";
 class MyDB extends CMySql{
 	function __construct(){
 	
-		$this->hostname = 'localhost';
-		$this->username = 'root';
+		$this->hostname = '';
+		$this->username = '';
 		$this->password = '';
-		$this->database = 'ticket';
+		$this->database = '';
 		
 		CMySql::__construct();
 	}
@@ -24,14 +24,20 @@ class MyDB extends CMySql{
 
 function ticketmysqlconnect(){
 
-	//First we connect to localhost, then we login and pass, if it cannot connect, produces an error
-	$link = mysql_connect( 'localhost', 'root', '' );
+	//First we connect to database, then we login and pass, if it cannot connect, produces an error
+
+	$hostname = '';
+	$username = '';
+	$password = '';
+	$database = '';
+
+	$link = mysql_connect( $hostname, $username, $password );
 	if (!$link){
 		die ('Could not connect: ' . mysql_error()); 
 	}
 	
 	//This selects the database, and if it cannot connect, produces an error	
-	$select_db = mysql_select_db( 'ticket', $link);
+	$select_db = mysql_select_db( $database, $link);
 	if (!$select_db){
 		die ('Could not select: ' . mysql_error());
 	}
