@@ -7,6 +7,18 @@
 
 include "functions.php";
 
+//password protection
+if ($_GET){ 
+	$ticketid = $_GET[id]; 
+	$ticketpass = $_GET[pass];
+}
+if ($_POST){ 
+	$ticketid = $_POST[id]; 
+	$ticketpass = $_POST[pass];
+}
+
+viewticket_protection($ticketid, $ticketpass);
+
 ticket_top( "View Ticket", 700 );
 
 //The ticket itself

@@ -36,9 +36,8 @@ function ticket_top ($title = NULL, $width = 600){
 				});
 			</script>
 			<script>
-    $(document).ready(function () {
-
-        $("#formABC").submit(function (e) {
+    			$(document).ready(function () {
+        		$("#formABC").submit(function (e) {
 
             //stop submitting the form to see the disabled button effect
             //e.preventDefault();
@@ -49,12 +48,7 @@ function ticket_top ($title = NULL, $width = 600){
             //disable a normal button
             $("#btnTest").attr("disabled", true);
 
-            return true;
-
-        });
-    });
-</script>
-			';
+            return true; });});</script>';
 	echo "<title>GMHA Help Desk ";
 	if($title)	echo "[ $title ]";
 	echo "</title>";
@@ -105,7 +99,7 @@ function members_only($permission = NULL ){
 	
 	//If there are any errors, this kills the script and redirects them to the index page. 
 	if ( $error ) {
-		redirect( "index.php", 2,  "Access Denied", "You do not have correct privileges to view this page. Go away" );
+		redirect( "index.php", 2,  "Access Denied", "You do not have correct privileges to view this page" );
 		exit;
 	}
 }
@@ -347,6 +341,30 @@ function email_admin($ticketid, $name, $email, $message, $phone, $locationid, $c
 
 //Setting the timezone (for Guam time) for date functions
 date_default_timezone_set( 'Etc/GMT-10' );
+
+//Viewticket access function
+function viewticket_protection($ticketid, $ticketpass){
+
+	//Check to see if user is logged in
+	if (!$_COOKIE[userid]){
+		
+		if (!$_GET[id] OR !$_GET[pass]){
+			$error = TRUE;
+		}else{
+			//check ticket password
+			$db = new myDB;
+			$db->query("SELECT password FROM tickets where ticketid = '$ticketid'");
+			$row = $db->getrow();
+			
+			if($row[password] != $ticketpass) $error = TRUE;
+		}
+	}
+
+	if ($error) {
+		redirect( "index.php", 2,  "Access Denied", "You do not have correct privileges to view this page" );
+		exit;
+	}
+}
 
 //debuginfo();
 
