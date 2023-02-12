@@ -10,6 +10,9 @@
 //Server URL
 $server_url = "IP/helpdesk";
 
+//From email. Set this or email won't send.
+$config_from_email = "changeme@example.com";
+
 class MyDB extends CMySql{
 	function __construct(){
 	
