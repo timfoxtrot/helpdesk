@@ -214,8 +214,9 @@ function admin_solved()
 	$setmessage = wordwrap ( $setmessage, 300 );
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$headers .= 'From: ticket@itehq.net';
-	$subject = "[Solved]ITE Troubleshooting Ticket";
+	global $config_from_email;
+	$headers .= 'From: ' . $config_from_email;
+	$subject = "[Solved] GMHA Troubleshooting Ticket";
 	$mail = mail ( $row[email], $subject, $setmessage, $headers );
 	
 	redirect( "admin.php", 0 );
@@ -275,8 +276,9 @@ function admin_activateuser($link)
 	$setmessage = wordwrap ( $setmessage, 300 );
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$headers .= 'From: ticket@itehq.net';
-	$subject = "ITE Help Desk Account Activated!";
+	global $config_from_email;
+	$headers .= 'From: ' . $config_from_email;
+	$subject = "GMHA Help Desk Account Activated!";
 	$mail = mail ( $row[email], $subject, $setmessage, $headers );
 	
 	redirect ( "admin.php", 0 );
