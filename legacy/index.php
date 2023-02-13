@@ -139,7 +139,7 @@ if ( $_GET[id] && $_POST[check] == 'y' )
 		{
 			$setmessage ="
 				<html>
-				Thank you for using the ITE Troubleshooting form.<br><br>
+				Thank you for using the GMHA Troubleshooting form.<br><br>
 					
 				Your ticket number is <b>$row[ticketid]</b>.<br><br>
 								
@@ -154,8 +154,9 @@ if ( $_GET[id] && $_POST[check] == 'y' )
 			$setmessage = wordwrap ( $setmessage, 300 );
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-			$headers .= 'From: ticket@itehq.net';
-			$subject = "ITE Troubleshooting ticket";
+            global $config_from_email;
+			$headers .= 'From: ' . $config_from_email;
+			$subject = "GMHA Troubleshooting ticket";
 			$mail = mail ( $row[email], $subject, $setmessage, $headers );
 				
 			//Returning an error if the email didn't send. 
@@ -198,8 +199,9 @@ if ( $_GET[id] && $_POST[check] == 'y' )
 			$adminmessage = wordwrap ( $adminmessage, 300 );
 			$adminheaders  = 'MIME-Version: 1.0' . "\r\n";
 			$adminheaders .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-			$adminheaders .= 'From: ticket@itehq.net';
-			$adminsubject = "New ITE Troubleshooting Ticket";
+            global $config_from_email;
+			$adminheaders .= 'From: ' . $config_from_email;
+			$adminsubject = "New GHMA Troubleshooting Ticket";
 			$mail = mail ( $users[email], $adminsubject, $adminmessage, $adminheaders );
 				
 		}
