@@ -11,10 +11,13 @@ include "drtlib.php";
 include "config.php";
 
 //Displays the header (top) of the pages
-function ticket_top ($title = NULL, $width = 600){	
+function ticket_top ($title = NULL, $width = 600, $refresh = NULL){	
 	echo "<html>";
 	echo "<head>";
-	//echo "<meta http-equiv=\"refresh\" content=\"10\">";
+
+	//Refresh on admin page
+	if ($refresh == "YES") echo "<meta http-equiv=\"refresh\" content=\"10\">";
+	
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";
 	echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">";
 	echo '<link rel="stylesheet" href="js/jquery-ui-1.10.2.custom.min.css" />

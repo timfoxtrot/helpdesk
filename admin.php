@@ -27,7 +27,7 @@ switch ( $_GET[action] )
 //-------------------------------------------------------------------------
 function admin_page( $view = NULL )
 {
-	ticket_top( "Admin Page", "900");
+	ticket_top( "Admin Page", "900", "YES");
 	//addcoolline(900);
 	//echo "<br><br>";
 	echo "<center><a href=\"admin.php\">View Open</a> | <a href=\"admin.php?action=viewclosed\">View Closed</a> | <a href=\"admin.php?action=viewall\">View All</a> | <a href=\"search.php\">Search</a>";
