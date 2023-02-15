@@ -34,12 +34,18 @@ function admin_page( $view = NULL )
 
 	//Database connection
 	$db = new MyDB;
-	if ( $view == 1 )
-		$view_query = "SELECT * FROM tickets WHERE solved = '2' AND active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
-	if ( $view == 2 ) 
-		$view_query = "SELECT * FROM tickets WHERE solved = '1' AND active ='1' ORDER by solved DESC, datecreated DESC";
+	
+	//view all
 	if ($view == NULL)
 		$view_query = "SELECT * FROM tickets WHERE active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
+	
+	//view open tickets
+	if ( $view == 1 )
+		$view_query = "SELECT * FROM tickets WHERE solved = '2' AND active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
+	
+	//view closed tickets
+	if ( $view == 2 ) 
+		$view_query = "SELECT * FROM tickets WHERE solved = '1' AND active ='1' ORDER by solved DESC, datecreated DESC";
 
 	$table = new CTable;
 	$table->setwidth(900);
@@ -55,21 +61,23 @@ function admin_page( $view = NULL )
 	{	
 		$status = "Pending";
 		
-		if ( strlen( $row[message] ) > 60)	
+		if (strlen( $row[message]) > 60)	
 			$dotdot="...";
 		else 
 			$dotdot= FALSE;
-		if ( $row[newstatus] == 0 )
+
+		if ($row[newstatus] == 0)
 			$status = "<img src=\"new.gif\">";
-		if ( $row[level] == 1)
+		if ($row[level] == 1)
 			$status = "<img src=\"urgent.gif\" width=15 height=15>";
-			
-		if ( $row[solved] == 1)
+		
+		if ($row[solved] == 1){
 			$status = "<img src=\"check.gif\">";
-		
-		if ( $row[assignedto] != 0)
-			$status.= '<br><font size="1"><i>Assigned to:<br>'.getusername($row[assignedto]).'</font>';
-		
+			$status.= '<br><font size="1"><i>Solved by:<br>'.getusername($row[whosolved]).'</font>';
+		} else {
+			if ( $row[assignedto] != 0)
+				$status.= '<br><font size="1"><i>Assigned to:<br>'.getusername($row[assignedto]).'</font>';
+		}
 		//The options menu
 		
 		//Not urgent and unsolved
