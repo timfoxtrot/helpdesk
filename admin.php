@@ -35,12 +35,12 @@ function admin_page( $view = NULL )
 	//Database connection
 	$db = new MyDB;
 	if ( $view == 1 )
-		$where = "WHERE solved = '2' AND active ='1'";
+		$view_query = "SELECT * FROM tickets WHERE solved = '2' AND active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
 	if ( $view == 2 ) 
-		$where = "WHERE solved = '1' AND active ='1'";
-		
+		$view_query = "SELECT * FROM tickets WHERE solved = '1' AND active ='1' ORDER by solved DESC, datecreated DESC";
 	if ($view == NULL)
-		$where = "WHERE active ='1'";
+		$view_query = "SELECT * FROM tickets WHERE active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
+
 	$table = new CTable;
 	$table->setwidth(900);
 	$table->setspacing(0);
@@ -50,7 +50,7 @@ function admin_page( $view = NULL )
 						'width="100" bgcolor="ebebeb" class="tdtable"', 
 						'width="25" class="tdtable"','width="100" class="tdtableright" bgcolor="ebebeb"');
 	$table->pushth( "<center>#", "Contents","<center>Submitted by", "<center>Replies", "<center>Status", "<center>Options");
-	$db->query( 'SELECT * FROM tickets '.$where.' ORDER solved DESC, datecreated DESC' ); 
+	$db->query($view_query); 
 	while ( $row = $db->getrow() ) 
 	{	
 		$status = "Pending";
