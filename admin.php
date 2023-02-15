@@ -50,7 +50,7 @@ function admin_page( $view = NULL )
 						'width="100" bgcolor="ebebeb" class="tdtable"', 
 						'width="25" class="tdtable"','width="100" class="tdtableright" bgcolor="ebebeb"');
 	$table->pushth( "<center>#", "Contents","<center>Submitted by", "<center>Replies", "<center>Status", "<center>Options");
-	$db->query( 'SELECT * FROM tickets '.$where.' ORDER by level ASC, solved DESC, datecreated DESC' ); 
+	$db->query( 'SELECT * FROM tickets '.$where.' ORDER solved DESC, datecreated DESC' ); 
 	while ( $row = $db->getrow() ) 
 	{	
 		$status = "Pending";
