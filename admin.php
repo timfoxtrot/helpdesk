@@ -1,13 +1,12 @@
 <?php
 /*****************************************************************************
 *	File: 		admin.php
-*	Purpose: 	The ADMIN PAGE! BWAHAHAHHHAHAHA
+*	Purpose: 	Admin Page (Dashboard)
 *	Author:		Tim Dominguez (timfox@coufu.com)
 ******************************************************************************/
 include "functions.php";
 
-switch ( $_GET[action] ) 
-{
+switch ( $_GET[action] ) {
 	default: 				members_only();			admin_page("1");		break;
 	case "viewall";			members_only();			admin_page();			break;
 	case "viewclosed";		members_only();			admin_page("2");		break;
@@ -25,11 +24,10 @@ switch ( $_GET[action] )
 //	URL: 		admin.php
 //	Purpose:	the main admin page 
 //-------------------------------------------------------------------------
-function admin_page( $view = NULL )
-{
+function admin_page( $view = NULL ){
 	ticket_top( "Admin Page", "900", "YES");
-	//addcoolline(900);
-	//echo "<br><br>";
+	
+	//Main Menu
 	echo "<center><a href=\"admin.php\">View Open</a> | <a href=\"admin.php?action=viewclosed\">View Closed</a> | <a href=\"admin.php?action=viewall\">View All</a> | <a href=\"search.php\">Search</a>";
 
 	//Database connection
@@ -123,35 +121,6 @@ function admin_page( $view = NULL )
 	$table->show();	
 	
 	echo "<br><br>";
-	/*if ( getusergroupid( $_COOKIE[userid] ) == 1 )
-	{
-		ticketmysqlconnect();
-		$table = new CTable;
-		$result1 = mysql_query ( "SELECT * FROM users WHERE active ='1'");
-		$table->setwidth(600);
-		$table->setspacing(0);
-		$table->setpadding(6);			
-		$table->setcolprops( 'width="100" class="tdtable"', 'width="355" class="tdtable"', 'class="tdtableright"');
-		$table->pushth( "Existing Users" );
-		while ( $row1 = mysql_fetch_array( $result1, MYSQL_ASSOC ) )
-			$table->push ( "$row1[username]", "$row1[email]", "<center><font size=\"1\"><a href=\"admin.php?action=resetpw&id=$row1[id]\">Reset PW</a><br><a href=\"admin.php?action=deleteuser&id=$row1[id]\">Delete</a>");
-		$table->show();
-		echo "<br><br>";
-		
-		$result = mysql_query( "SELECT * FROM users WHERE active = '2'");
-		if ( mysql_num_rows ($result) > 0 ) 
-		{
-			$table = new CTable;
-			$table->setwidth(500);
-			$table->setspacing(0);
-			$table->setpadding(6);
-			$table->setcolprops( 'width="50" class="tdtable"', 'width="355" class="tdtable"', 'class="tdtableright"');
-			$table->pushth ("New Users");
-			while ( $row = mysql_fetch_array( $result, MYSQL_ASSOC ) )
-				$table->push ( "$row[username]", "$row[email]", "<center><font size=\"1\"><a href=\"admin.php?action=activateuser&id=$row[id]\">Activate</a><br><a href=\"admin.php?action=deleteuser&id=$row[id]\">Delete</a>" );
-			$table->show();
-		}
-	}*/
 
 	ticket_bottom();
 }
@@ -160,14 +129,12 @@ function admin_page( $view = NULL )
 //	URL: 		admin.php?action=urgent
 //	Purpose:	Marks a ticket as urgent 
 //-------------------------------------------------------------------------
-function admin_urgent()
-{
+function admin_urgent(){
 	$id  = "$_GET[id]";
 	$db= new MyDB; 
 	$result = mysql_query ( "UPDATE tickets SET level = '1' WHERE ticketid = '$id'");
 	
 	redirect( "admin.php", 0 );
-	
 }
 
 //-------------------------------------------------------------------------
@@ -175,12 +142,10 @@ function admin_urgent()
 //	Purpose:	Marks the ticket as solved and if urgent, removes the
 //				urgent status
 //-------------------------------------------------------------------------
-function admin_noturgent()
-{
+function admin_noturgent(){
 	$db= new MyDB;
 	$result = mysql_query( "UPDATE tickets SET level = '2' WHERE ticketid = '$_GET[id]'");
 	redirect( "admin.php", 0 );
-
 }
 
 //-------------------------------------------------------------------------
@@ -188,8 +153,7 @@ function admin_noturgent()
 //	Purpose:	Marks the ticket as solved and if urgent, removes the
 //				urgent status
 //-------------------------------------------------------------------------
-function admin_solved()
-{
+function admin_solved(){
 	$whosolved = $_COOKIE[userid];
 	$db= new MyDB;
 	$time = time();
@@ -235,8 +199,7 @@ function admin_solved()
 //	Purpose:	Removes the solved status just in case the tech made 
 //				a mistake
 //-------------------------------------------------------------------------
-function admin_unsolved()
-{
+function admin_unsolved(){
 	$db= new MyDB;
 	$result = mysql_query( 'UPDATE tickets SET solved = "2", datesolved="NULL", whosolved="NULL" WHERE ticketid = '.$_GET[id].'');
 	redirect( "admin.php", 0 );
@@ -248,23 +211,19 @@ function admin_unsolved()
 //				back to their defaults. Can activate later just in case it was 
 //				deleted by mistake.
 //-------------------------------------------------------------------------
-function admin_deleteticket()
-{
+function admin_deleteticket(){
 	$db= new MyDB;
 	$result = mysql_query( "UPDATE tickets SET active = '2', datesolved='NULL', whosolved='NULL', level = '2', solved = '2' WHERE ticketid = '$_GET[id]'");
 	redirect( "admin.php", 0 );
-
 }
 //-------------------------------------------------------------------------
 //	URL: 		admin.php?action=activateuser
 //	Purpose:	Activates the user
 //-------------------------------------------------------------------------
-function admin_activateuser($link)
-{
+function admin_activateuser($link){
 	$db = new MyDB;
 	$result = mysql_query( "UPDATE users SET active ='1' WHERE id = '$_GET[id]'");
-	if ( !$result )
-	{
+	if ( !$result ){
 		echo "Error message = " .mysql_error();
 		exit;
 	}
@@ -295,8 +254,7 @@ function admin_activateuser($link)
 //	URL: 		admin.php?action=deleteuser
 //	Purpose:	Deletes the user
 //-------------------------------------------------------------------------
-function admin_deleteuser()
-{
+function admin_deleteuser(){
 	$db = new MyDB;
 	$db->query('SELECT * FROM users WHERE id = '.$_GET[id].'');
 	$row = $db->getrow();
@@ -307,22 +265,17 @@ function admin_deleteuser()
 	}else{
 		redirect ("admin.php", 4, "NO WAY, JOSE", "YOURE NOT ALLOWED TO DELETE TIM");
 	}
-	
-	
 }
 //-------------------------------------------------------------------------
 //	URL: 		admin.php?action=resetpw
 //	Purpose:	Resets the password to "gmha2023"
 //-------------------------------------------------------------------------
-function admin_resetpw()
-{
+function admin_resetpw(){
 	$newpw = md5 ( "gmha2023" );
 	$db = new MyDB;
 	$db->query ( "UPDATE users SET password = '$newpw' WHERE id = '$_GET[id]'" );
 	
 	redirect ( "users.php", 0, "Success", "The password has been reset to gmha2023" );
 }
-
-
 ?>
 
