@@ -102,6 +102,12 @@ function admin_page($view = NULL){
 		$result = mysql_query( "SELECT * FROM posts WHERE ticketid = '$row[ticketid]' AND active='1'");
 		$posts = mysql_num_rows ($result);
 		
+		if($posts == 0){ 
+			$num_posts = '';
+		}else{
+			$num_posts = $posts;
+		}
+		
 		//getting the name of the user that posted last
 		$userresult = mysql_query( "SELECT * FROM posts WHERE ticketid= '$row[ticketid]' AND active='1' ORDER by datecreated DESC");
 		$userid = mysql_fetch_array ( $userresult, MYSQL_ASSOC );
@@ -120,7 +126,7 @@ function admin_page($view = NULL){
 		//creating the table
 		$table->push ( "<center>$row[ticketid]", "<i><a href=\"viewticket.php?id=$row[ticketid]\">$message</a>$dotdot", 
 						"<p align=\"right\"><b><a href=\"mailto:$row[email]\">$row[name]</a></b><br><font size=\"1\">
-						<i>$postdate</i></font>", "<p align=\"right\">$posts<br><font size=\"1\">
+						<i>$postdate</i></font>", "<p align=\"right\">$num_posts<br><font size=\"1\">
 						<i>$reply</i></font>", " <center>$status", "<center><font size=\"1\">$menu" );
 		
 	}
