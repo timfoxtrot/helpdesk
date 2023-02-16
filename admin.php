@@ -76,7 +76,7 @@ function admin_page($view = NULL){
 		
 		if ($row[solved] == 1){
 			$status = "<img src=\"check.gif\">";
-			$status.= '<br><font size="1"><i>Solved by:<br>'.getusername($row[whosolved]).'</font>';
+			$status.= '<br><font size="1"><i>Closed by:<br>'.getusername($row[whosolved]).'</font>';
 		} else {
 			if ( $row[assignedto] != 0)
 				$status.= '<br><font size="1"><i>Assigned to:<br>'.getusername($row[assignedto]).'</font>';
@@ -87,15 +87,15 @@ function admin_page($view = NULL){
 		//Not urgent and unsolved
 		if ( $row[level] == 2 && $row[solved] == 2) 
 			$menu = "<font size=\"2\"><a href=\"admin.php?action=urgent&id=$row[ticketid]\">Urgent</a> | 
-						<a href=\"post.php?ticketid=$row[ticketid]&s=1\">Solve!</a></font>";
+						<a href=\"post.php?ticketid=$row[ticketid]&s=1\">Close</a></font>";
 		//Urgent and unsolved
 		if ( $row[level] == 1 &&  $row[solved] == 2) 
 			$menu = "<a href=\"admin.php?action=noturgent&id=$row[ticketid]\">Not urgent</a><br>
-						<a href=\"post.php?ticketid=$row[ticketid]&s=1\">Solve!</a>";
+						<a href=\"post.php?ticketid=$row[ticketid]&s=1\">Close</a>";
 		
 		//Solved Tickets
 		if ( $row[solved] == 1) 
-			$menu = "<a href=\"admin.php?action=unsolve&id=$row[ticketid]\">Unsolve</a>";
+			$menu = "<a href=\"admin.php?action=unsolve&id=$row[ticketid]\">Reopen</a>";
 			
 			
 		//number of replies
@@ -200,7 +200,7 @@ function admin_solved(){
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	global $config_from_email;
 	$headers .= 'From: ' . $config_from_email;
-	$subject = "[Solved] GMHA Troubleshooting Ticket";
+	$subject = "[Closed] GMHA Troubleshooting Ticket";
 	$mail = mail ( $row[email], $subject, $setmessage, $headers );
 	
 	redirect( "admin.php", 0 );
