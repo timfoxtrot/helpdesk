@@ -16,7 +16,7 @@ switch ( $_GET[page] ){
 //Default Page. Main Form
 function main(){
 
-	//Updated 8/13/2013
+	//Updated 2/16/2023
 	//By: Tim Dominguez (timfox@coufu.com)
 
 	//Top Banner

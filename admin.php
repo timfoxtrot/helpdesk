@@ -6,10 +6,10 @@
 ******************************************************************************/
 include "functions.php";
 
-switch ( $_GET[action] ) {
-	default: 				members_only();			admin_page("1");		break;
+switch ($_GET[action]){
+	default: 				members_only();			admin_page(1);			break;
 	case "viewall";			members_only();			admin_page();			break;
-	case "viewclosed";		members_only();			admin_page("2");		break;
+	case "viewclosed";		members_only();			admin_page(2);			break;
 	case "urgent";			members_only();			admin_urgent();			break;
 	case "noturgent";		members_only();			admin_noturgent();		break;
 	case "solved"; 			members_only();			admin_solved();			break;
@@ -24,7 +24,7 @@ switch ( $_GET[action] ) {
 //	URL: 		admin.php
 //	Purpose:	the main admin page 
 //-------------------------------------------------------------------------
-function admin_page( $view = NULL ){
+function admin_page($view = NULL){
 	ticket_top( "Admin Page", "900", "YES");
 	
 	//Main Menu
@@ -55,9 +55,13 @@ function admin_page( $view = NULL ){
 						'width="25" class="tdtable"','width="100" class="tdtableright" bgcolor="ebebeb"');
 	$table->pushth( "<center>#", "Contents","<center>Submitted by", "<center>Replies", "<center>Status", "<center>Options");
 	$db->query($view_query); 
-	while ( $row = $db->getrow() ) 
-	{	
-		$status = "Pending";
+	while ($row = $db->getrow()){	
+		if(timeDiff($row[datecreated],time(), "days") >= 2 AND $row[solved] == 2){
+			$duration = timeDiff($row[datecreated],time(), "days");
+			$status = '<font size ="2" color="ff0000"><b>'.$duration.' days old</b></font>';
+		}else{
+			$status = "Pending";
+		}
 		
 		if (strlen( $row[message]) > 60)	
 			$dotdot="...";
@@ -76,6 +80,7 @@ function admin_page( $view = NULL ){
 			if ( $row[assignedto] != 0)
 				$status.= '<br><font size="1"><i>Assigned to:<br>'.getusername($row[assignedto]).'</font>';
 		}
+		
 		//The options menu
 		
 		//Not urgent and unsolved

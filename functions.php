@@ -248,7 +248,6 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 		$table->pushth('<b>Submit</b>', '', '' );
 	}
 	$table->push('<b>Name:</b>', ''.$inputtext.' <b>Location:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
-	//$table->push('<b>Email:</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number:</b> &nbsp;'.inputtext("phonenumber","$phone","16", "","$phoneclass").'' );
 	$table->push('<b>Email:</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number:</b> &nbsp;'.$callbacknumber);
 	$table->push('<b>Category:</b>', ''.$category.'');
 	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "74", "9", "$messageclass"));
@@ -259,8 +258,6 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	$anti_jill .= 'action="index.php?page=submit" method="post">';
 
 	print_r($anti_jill);
-	
-	//echo '<form id="formABC" action="index.php?page=submit" method="post">';
 	
 	//Creating the Form
 	$table->show();
@@ -344,13 +341,37 @@ function email_admin($ticketid, $name, $email, $message, $phone, $locationid, $c
 
 	}
 	//Error check if email is broken
-	if(!$mail)	echo 'Error: The email admin script did not go through';
+	//if(!$mail)	echo 'Error: The email admin script did not go through';
 
 }
 
 //Setting the timezone (for Guam time) for date functions
 date_default_timezone_set( 'Etc/GMT-10' );
 
-//debuginfo();
+//Calculating time differences (for ticket duration purposes)
+function timeDiff($firstTime,$lastTime,$value = NULL){
+
+    // convert to unix timestamps
+    //$firstTime=strtotime($firstTime);  --- removing because datecreated is already in unix format
+    //$lastTime=strtotime($lastTime);
+
+    // perform subtraction to get the difference (in seconds) between times
+    $difference=$lastTime-$firstTime;
+
+	//calculations
+    $years = abs(floor($difference / 31536000));
+    $days = abs(floor(($difference-($years * 31536000))/86400));
+    $hours = abs(floor(($difference-($years * 31536000)-($days * 86400))/3600));
+    $mins = abs(floor(($difference-($years * 31536000)-($days * 86400)-($hours * 3600))/60));
+
+    //no value returns seconds
+    switch($value){
+        default:        	return $difference;   break;
+        case "years";   	return $years;        break;
+        case "days";    	return $days;         break;
+        case "hours";   	return $hours;        break;
+        case "minutes";  	return $mins;         break;
+    }
+}
 
 ?>
