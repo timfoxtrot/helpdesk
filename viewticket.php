@@ -118,9 +118,9 @@ $solution = mysql_query ("SELECT * FROM tickets WHERE ticketid =$_GET[id]");
 $solution = mysql_fetch_array ($solution, MYSQL_ASSOC);
 $addreply = '<table width="600"><tr><td><p align="left"><a href="admin.php?action=delete&id='.$_GET[id].'">Delete</a> | <a href="post.php?ticketid='.$_GET[id].'">Add Reply</a>';
 if ( $solution[solved] == 2)
-	$addreply.= '| <a href="post.php?ticketid='.$_GET[id].'&s=1">Mark As Solved</a></td></tr></table>';
+	$addreply.= '| <a href="post.php?ticketid='.$_GET[id].'&s=1">Close</a></td></tr></table>';
 if ( $solution[solved] == 1)
-	$addreply.= '| <a href="admin.php?action=unsolve&id='.$_GET[id].'">Unsolve</a></td></tr></table>';
+	$addreply.= '| <a href="admin.php?action=unsolve&id='.$_GET[id].'">Reopen</a></td></tr></table>';
 if ( $_COOKIE[userid] )
 	echo "$addreply";
 
