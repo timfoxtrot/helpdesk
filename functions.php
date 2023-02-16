@@ -79,6 +79,22 @@ function ticket_top ($title = NULL, $width = 600, $refresh = NULL){
 	}
 }
 
+//Default Page. Main Form
+function ticketform(){
+
+	//Updated 2/16/2023
+	//By: Tim Dominguez (timfox@coufu.com)
+
+	//Top Banner
+	ticket_top();
+	
+	//Blank Form, no values
+	submissionform();
+	
+	//Footer
+	ticket_bottom();
+}
+
 //Displays Bottom of the Page
 function ticket_bottom($coolline = NULL, $width = 600){
 	if ($coolline){

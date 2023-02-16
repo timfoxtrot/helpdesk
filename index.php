@@ -9,24 +9,8 @@ include 'functions.php';
 
 //Page Handling
 switch ( $_GET[page] ){
-	default:		main();					break;
+	default:		ticketform();			break;
 	case 'submit';	submit($server_url);	break;
-}
-
-//Default Page. Main Form
-function main(){
-
-	//Updated 2/16/2023
-	//By: Tim Dominguez (timfox@coufu.com)
-
-	//Top Banner
-	ticket_top();
-	
-	//Blank Form, no values
-	submissionform();
-	
-	//Footer
-	ticket_bottom();
 }
 
 //Data Handling
