@@ -356,21 +356,18 @@ function timeDiff($firstTime,$lastTime,$value = NULL){
     //$lastTime=strtotime($lastTime);
 
     // perform subtraction to get the difference (in seconds) between times
-    $difference=$lastTime-$firstTime;
+    $difference = $lastTime-$firstTime;
 
-	//calculations
-    $years = abs(floor($difference / 31536000));
-    $days = abs(floor(($difference-($years * 31536000))/86400));
-    $hours = abs(floor(($difference-($years * 31536000)-($days * 86400))/3600));
-    $mins = abs(floor(($difference-($years * 31536000)-($days * 86400)-($hours * 3600))/60));
+	$mins 	= abs(floor($difference/60));
+	$hours  = abs(floor($mins/60));
+	$days   = abs(floor($hours/24));
 
     //no value returns seconds
     switch($value){
         default:        	return $difference;   break;
-        case "years";   	return $years;        break;
+		case "minutes";  	return $mins;         break;
+		case "hours";   	return $hours;        break;
         case "days";    	return $days;         break;
-        case "hours";   	return $hours;        break;
-        case "minutes";  	return $mins;         break;
     }
 }
 

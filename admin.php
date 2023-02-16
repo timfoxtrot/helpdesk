@@ -56,10 +56,10 @@ function admin_page($view = NULL){
 	$table->pushth( "<center>#", "Contents","<center>Submitted by", "<center>Replies", "<center>Status", "<center>Options");
 	$db->query($view_query); 
 	while ($row = $db->getrow()){	
-		if(timeDiff($row[datecreated],time(), "days") >= 1 AND $row[solved] == 2){
-			$currenttime = time();
+		$currenttime = time();
+		if(timeDiff($row[datecreated],$currenttime, "hours") >= 48 AND $row[solved] == 2){
 			$duration = timeDiff($row[datecreated],$currenttime, "days");
-			$status = '<font size ="2" color="ff0000"><b>'.$duration.' day(s) old</b></font>';
+			$status = '<font size ="2" color="ff0000"><b>'.$duration.' days old</b></font>';
 		}else{
 			$status = "Pending";
 		}
