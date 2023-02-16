@@ -28,13 +28,22 @@ function main(){
     $table->setwidth(600);
     $table->setspacing(0);
 	$table->setpadding(10);
-    $table->pushth('Helpful Links', 'Search Tickets');
+    $table->pushth('Helpful Links', 'Access Ticket');
     $table->push('
         <br><a href="index2.php?page=ticketform">Submit New Ticket</a>
         <br><a href="https://gmha.org:2096">GMHA Webmail</a>
         <br><br>'
-    , 'Ticket Num: &nbsp; '.$ticket_number.'<br>
-       Ticket Pass:  &nbsp;&nbsp;'.$ticket_password.'');
+
+    , '<table>
+        <tr>
+            <td>Ticket Num:</td>
+            <td>'.$ticket_number.'</td>
+        </tr>
+        <tr>
+            <td>Ticket Pass:</td>
+            <td>'.$ticket_password.'</td>
+        </tr>
+       </table>');
     $table->show();
     addcoolline(600);
 
