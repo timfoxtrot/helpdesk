@@ -358,7 +358,6 @@ function email_admin($ticketid, $name, $email, $message, $phone, $locationid, $c
 //Setting the timezone (for Guam time) for date functions
 date_default_timezone_set( 'Etc/GMT-10' );
 
-<<<<<<< HEAD
 //Viewticket access function
 function viewticket_protection($ticketid, $ticketpass){
 
@@ -384,7 +383,6 @@ function viewticket_protection($ticketid, $ticketpass){
 }
 
 //debuginfo();
-=======
 //Calculating time differences (for ticket duration purposes)
 function timeDiff($firstTime,$lastTime,$value = NULL){
 
@@ -407,6 +405,5 @@ function timeDiff($firstTime,$lastTime,$value = NULL){
         case "days";    	return $days;         break;
     }
 }
->>>>>>> main
 
 ?>
