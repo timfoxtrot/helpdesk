@@ -1,16 +1,15 @@
 <?php
 /*****************************************************************************
 *	File: 		admin.php
-*	Purpose: 	The ADMIN PAGE! BWAHAHAHHHAHAHA
+*	Purpose: 	Admin Page (Dashboard)
 *	Author:		Tim Dominguez (timfox@coufu.com)
 ******************************************************************************/
 include "functions.php";
 
-switch ( $_GET[action] ) 
-{
-	default: 				members_only();			admin_page("1");		break;
+switch ($_GET[action]){
+	default: 				members_only();			admin_page(1);			break;
 	case "viewall";			members_only();			admin_page();			break;
-	case "viewclosed";		members_only();			admin_page("2");		break;
+	case "viewclosed";		members_only();			admin_page(2);			break;
 	case "urgent";			members_only();			admin_urgent();			break;
 	case "noturgent";		members_only();			admin_noturgent();		break;
 	case "solved"; 			members_only();			admin_solved();			break;
@@ -25,22 +24,27 @@ switch ( $_GET[action] )
 //	URL: 		admin.php
 //	Purpose:	the main admin page 
 //-------------------------------------------------------------------------
-function admin_page( $view = NULL )
-{
-	ticket_top( "Admin Page", "900");
-	//addcoolline(900);
-	//echo "<br><br>";
+function admin_page($view = NULL){
+	ticket_top( "Admin Page", "900", "YES");
+	
+	//Main Menu
 	echo "<center><a href=\"admin.php\">View Open</a> | <a href=\"admin.php?action=viewclosed\">View Closed</a> | <a href=\"admin.php?action=viewall\">View All</a> | <a href=\"search.php\">Search</a>";
 
 	//Database connection
 	$db = new MyDB;
-	if ( $view == 1 )
-		$where = "WHERE solved = '2' AND active ='1'";
-	if ( $view == 2 ) 
-		$where = "WHERE solved = '1' AND active ='1'";
-		
+	
+	//view all
 	if ($view == NULL)
-		$where = "WHERE active ='1'";
+		$view_query = "SELECT * FROM tickets WHERE active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
+	
+	//view open tickets
+	if ( $view == 1 )
+		$view_query = "SELECT * FROM tickets WHERE solved = '2' AND active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
+	
+	//view closed tickets
+	if ( $view == 2 ) 
+		$view_query = "SELECT * FROM tickets WHERE solved = '1' AND active ='1' ORDER by solved DESC, datecreated DESC";
+
 	$table = new CTable;
 	$table->setwidth(900);
 	$table->setspacing(0);
@@ -50,45 +54,59 @@ function admin_page( $view = NULL )
 						'width="100" bgcolor="ebebeb" class="tdtable"', 
 						'width="25" class="tdtable"','width="100" class="tdtableright" bgcolor="ebebeb"');
 	$table->pushth( "<center>#", "Contents","<center>Submitted by", "<center>Replies", "<center>Status", "<center>Options");
-	$db->query( 'SELECT * FROM tickets '.$where.' ORDER by level ASC, solved DESC, datecreated DESC' ); 
-	while ( $row = $db->getrow() ) 
-	{	
-		$status = "Pending";
+	$db->query($view_query); 
+	while ($row = $db->getrow()){	
+		$currenttime = time();
+		if(timeDiff($row[datecreated],$currenttime, "hours") >= 48 AND $row[solved] == 2){
+			$duration = timeDiff($row[datecreated],$currenttime, "days");
+			$status = '<font size ="2" color="ff0000"><b>'.$duration.' days old</b></font>';
+		}else{
+			$status = "Pending";
+		}
 		
-		if ( strlen( $row[message] ) > 60)	
+		if (strlen( $row[message]) > 60)	
 			$dotdot="...";
 		else 
 			$dotdot= FALSE;
-		if ( $row[newstatus] == 0 )
+
+		if ($row[newstatus] == 0)
 			$status = "<img src=\"new.gif\">";
-		if ( $row[level] == 1)
+		if ($row[level] == 1)
 			$status = "<img src=\"urgent.gif\" width=15 height=15>";
-			
-		if ( $row[solved] == 1)
-			$status = "<img src=\"check.gif\">";
 		
-		if ( $row[assignedto] != 0)
-			$status.= '<br><font size="1"><i>Assigned to:<br>'.getusername($row[assignedto]).'</font>';
+		if ($row[solved] == 1){
+			$status = "<img src=\"check.gif\">";
+			$status.= '<br><font size="1"><i>Closed by:<br>'.getusername($row[whosolved]).'</font>';
+		} else {
+			if ( $row[assignedto] != 0)
+				$status.= '<br><font size="1"><i>Assigned to:<br>'.getusername($row[assignedto]).'</font>';
+		}
 		
 		//The options menu
 		
 		//Not urgent and unsolved
 		if ( $row[level] == 2 && $row[solved] == 2) 
 			$menu = "<font size=\"2\"><a href=\"admin.php?action=urgent&id=$row[ticketid]\">Urgent</a> | 
-						<a href=\"post.php?ticketid=$row[ticketid]&s=1\">Solve!</a></font>";
+						<a href=\"post.php?ticketid=$row[ticketid]&s=1\">Close</a></font>";
 		//Urgent and unsolved
 		if ( $row[level] == 1 &&  $row[solved] == 2) 
 			$menu = "<a href=\"admin.php?action=noturgent&id=$row[ticketid]\">Not urgent</a><br>
-						<a href=\"post.php?ticketid=$row[ticketid]&s=1\">Solve!</a>";
+						<a href=\"post.php?ticketid=$row[ticketid]&s=1\">Close</a>";
 		
 		//Solved Tickets
 		if ( $row[solved] == 1) 
-			$menu = "<a href=\"admin.php?action=unsolve&id=$row[ticketid]\">Unsolve</a>";
+			$menu = "<a href=\"admin.php?action=unsolve&id=$row[ticketid]\">Reopen</a>";
 			
 			
 		//number of replies
 		$result = mysql_query( "SELECT * FROM posts WHERE ticketid = '$row[ticketid]' AND active='1'");
 		$posts = mysql_num_rows ($result);
+		
+		if($posts == 0){ 
+			$num_posts = '';
+		}else{
+			$num_posts = $posts;
+		}
 		
 		//getting the name of the user that posted last
 		$userresult = mysql_query( "SELECT * FROM posts WHERE ticketid= '$row[ticketid]' AND active='1' ORDER by datecreated DESC");
@@ -108,42 +126,13 @@ function admin_page( $view = NULL )
 		//creating the table
 		$table->push ( "<center>$row[ticketid]", "<i><a href=\"viewticket.php?id=$row[ticketid]\">$message</a>$dotdot", 
 						"<p align=\"right\"><b><a href=\"mailto:$row[email]\">$row[name]</a></b><br><font size=\"1\">
-						<i>$postdate</i></font>", "<p align=\"right\">$posts<br><font size=\"1\">
+						<i>$postdate</i></font>", "<p align=\"right\">$num_posts<br><font size=\"1\">
 						<i>$reply</i></font>", " <center>$status", "<center><font size=\"1\">$menu" );
 		
 	}
 	$table->show();	
 	
 	echo "<br><br>";
-	/*if ( getusergroupid( $_COOKIE[userid] ) == 1 )
-	{
-		ticketmysqlconnect();
-		$table = new CTable;
-		$result1 = mysql_query ( "SELECT * FROM users WHERE active ='1'");
-		$table->setwidth(600);
-		$table->setspacing(0);
-		$table->setpadding(6);			
-		$table->setcolprops( 'width="100" class="tdtable"', 'width="355" class="tdtable"', 'class="tdtableright"');
-		$table->pushth( "Existing Users" );
-		while ( $row1 = mysql_fetch_array( $result1, MYSQL_ASSOC ) )
-			$table->push ( "$row1[username]", "$row1[email]", "<center><font size=\"1\"><a href=\"admin.php?action=resetpw&id=$row1[id]\">Reset PW</a><br><a href=\"admin.php?action=deleteuser&id=$row1[id]\">Delete</a>");
-		$table->show();
-		echo "<br><br>";
-		
-		$result = mysql_query( "SELECT * FROM users WHERE active = '2'");
-		if ( mysql_num_rows ($result) > 0 ) 
-		{
-			$table = new CTable;
-			$table->setwidth(500);
-			$table->setspacing(0);
-			$table->setpadding(6);
-			$table->setcolprops( 'width="50" class="tdtable"', 'width="355" class="tdtable"', 'class="tdtableright"');
-			$table->pushth ("New Users");
-			while ( $row = mysql_fetch_array( $result, MYSQL_ASSOC ) )
-				$table->push ( "$row[username]", "$row[email]", "<center><font size=\"1\"><a href=\"admin.php?action=activateuser&id=$row[id]\">Activate</a><br><a href=\"admin.php?action=deleteuser&id=$row[id]\">Delete</a>" );
-			$table->show();
-		}
-	}*/
 
 	ticket_bottom();
 }
@@ -152,14 +141,12 @@ function admin_page( $view = NULL )
 //	URL: 		admin.php?action=urgent
 //	Purpose:	Marks a ticket as urgent 
 //-------------------------------------------------------------------------
-function admin_urgent()
-{
+function admin_urgent(){
 	$id  = "$_GET[id]";
 	$db= new MyDB; 
 	$result = mysql_query ( "UPDATE tickets SET level = '1' WHERE ticketid = '$id'");
 	
 	redirect( "admin.php", 0 );
-	
 }
 
 //-------------------------------------------------------------------------
@@ -167,12 +154,10 @@ function admin_urgent()
 //	Purpose:	Marks the ticket as solved and if urgent, removes the
 //				urgent status
 //-------------------------------------------------------------------------
-function admin_noturgent()
-{
+function admin_noturgent(){
 	$db= new MyDB;
 	$result = mysql_query( "UPDATE tickets SET level = '2' WHERE ticketid = '$_GET[id]'");
 	redirect( "admin.php", 0 );
-
 }
 
 //-------------------------------------------------------------------------
@@ -180,8 +165,7 @@ function admin_noturgent()
 //	Purpose:	Marks the ticket as solved and if urgent, removes the
 //				urgent status
 //-------------------------------------------------------------------------
-function admin_solved()
-{
+function admin_solved(){
 	$whosolved = $_COOKIE[userid];
 	$db= new MyDB;
 	$time = time();
@@ -214,8 +198,9 @@ function admin_solved()
 	$setmessage = wordwrap ( $setmessage, 300 );
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$headers .= 'From: ticket@itehq.net';
-	$subject = "[Solved]ITE Troubleshooting Ticket";
+	global $config_from_email;
+	$headers .= 'From: ' . $config_from_email;
+	$subject = "[Closed] GMHA Troubleshooting Ticket";
 	$mail = mail ( $row[email], $subject, $setmessage, $headers );
 	
 	redirect( "admin.php", 0 );
@@ -226,8 +211,7 @@ function admin_solved()
 //	Purpose:	Removes the solved status just in case the tech made 
 //				a mistake
 //-------------------------------------------------------------------------
-function admin_unsolved()
-{
+function admin_unsolved(){
 	$db= new MyDB;
 	$result = mysql_query( 'UPDATE tickets SET solved = "2", datesolved="NULL", whosolved="NULL" WHERE ticketid = '.$_GET[id].'');
 	redirect( "admin.php", 0 );
@@ -239,23 +223,19 @@ function admin_unsolved()
 //				back to their defaults. Can activate later just in case it was 
 //				deleted by mistake.
 //-------------------------------------------------------------------------
-function admin_deleteticket()
-{
+function admin_deleteticket(){
 	$db= new MyDB;
 	$result = mysql_query( "UPDATE tickets SET active = '2', datesolved='NULL', whosolved='NULL', level = '2', solved = '2' WHERE ticketid = '$_GET[id]'");
 	redirect( "admin.php", 0 );
-
 }
 //-------------------------------------------------------------------------
 //	URL: 		admin.php?action=activateuser
 //	Purpose:	Activates the user
 //-------------------------------------------------------------------------
-function admin_activateuser($link)
-{
+function admin_activateuser($link){
 	$db = new MyDB;
 	$result = mysql_query( "UPDATE users SET active ='1' WHERE id = '$_GET[id]'");
-	if ( !$result )
-	{
+	if ( !$result ){
 		echo "Error message = " .mysql_error();
 		exit;
 	}
@@ -275,8 +255,9 @@ function admin_activateuser($link)
 	$setmessage = wordwrap ( $setmessage, 300 );
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$headers .= 'From: ticket@itehq.net';
-	$subject = "ITE Help Desk Account Activated!";
+	global $config_from_email;
+	$headers .= 'From: ' . $config_from_email;
+	$subject = "GMHA Help Desk Account Activated!";
 	$mail = mail ( $row[email], $subject, $setmessage, $headers );
 	
 	redirect ( "admin.php", 0 );
@@ -285,8 +266,7 @@ function admin_activateuser($link)
 //	URL: 		admin.php?action=deleteuser
 //	Purpose:	Deletes the user
 //-------------------------------------------------------------------------
-function admin_deleteuser()
-{
+function admin_deleteuser(){
 	$db = new MyDB;
 	$db->query('SELECT * FROM users WHERE id = '.$_GET[id].'');
 	$row = $db->getrow();
@@ -297,22 +277,17 @@ function admin_deleteuser()
 	}else{
 		redirect ("admin.php", 4, "NO WAY, JOSE", "YOURE NOT ALLOWED TO DELETE TIM");
 	}
-	
-	
 }
 //-------------------------------------------------------------------------
 //	URL: 		admin.php?action=resetpw
 //	Purpose:	Resets the password to "gmha2023"
 //-------------------------------------------------------------------------
-function admin_resetpw()
-{
+function admin_resetpw(){
 	$newpw = md5 ( "gmha2023" );
 	$db = new MyDB;
 	$db->query ( "UPDATE users SET password = '$newpw' WHERE id = '$_GET[id]'" );
 	
 	redirect ( "users.php", 0, "Success", "The password has been reset to gmha2023" );
 }
-
-
 ?>
 
