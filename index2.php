@@ -1,7 +1,7 @@
 <?php
 /*****************************************************************************
 *	File: 		index2.php
-*	Purpose: 	Dashboard page
+*	Purpose: 	Dashboard page work in progress
 *	Author:		Tim Dominguez (timfox@coufu.com)
 ******************************************************************************/
 include 'functions.php';
@@ -36,11 +36,11 @@ function main(){
 
     , '<table>
         <tr>
-            <td>Ticket Num:</td>
+            <td>Num:</td>
             <td>'.$ticket_number.'</td>
         </tr>
         <tr>
-            <td>Ticket Pass:</td>
+            <td>Pass:</td>
             <td>'.$ticket_password.'</td>
         </tr>
        </table>');
