@@ -13,6 +13,9 @@ $server_url = "IP/helpdesk";
 //From email. Set this or email won't send.
 $config_from_email = "changeme@example.com";
 
+//Send to email
+$admin_email = "example@example.com";
+
 class MyDB extends CMySql{
 	function __construct(){
 	
