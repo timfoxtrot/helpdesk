@@ -302,7 +302,8 @@ function email_user($ticketid, $email, $link){
 	$setmessage = wordwrap($setmessage, 300);
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$headers .= 'From: gmhahelpdesk@gmha.org';
+	global $config_from_email;
+	$headers .= 'From: ' . $config_from_email;
 	$subject =  "GMHA Helpdesk";
 	
 	$mail = mail($email, $subject, $setmessage, $headers);
@@ -317,42 +318,40 @@ function email_admin($ticketid, $name, $email, $message, $phone, $locationid, $c
 	//Updated: 1/18/2023
 	//By: Tim Dominguez (timfox@coufu.com)
 	
-	$db = new MyDB;
+	//Removing while loop. submissions take too long sending each IT an email.
+	
+	/*$db = new MyDB;
 	$db->query("SELECT * FROM users WHERE active ='1'");
-	while($users = $db->getrow()){
+	while($users = $db->getrow()){*/
 	
-		$newmessage 	= stripslashes( nl2br($message));
-		$location   	= getlocationname($locationid);
-		$category   	= getcategoryname($categoryid);
-	
-		$adminmessage ='
-			<html>
-			<b>Ticket#:</b> '.$ticketid.' <br>
-			<b>Name:</b>    '.$name.'<br>
-			<b>Email: </b>  '.$email.'<br>
-			<b>Callback:</b><a href="tel:'.$phone.'">'.$phone.'</a><br>
-			<b>Location:</b>'.$location.'<br>
-			<b>Category:</b>'.$category.'<br>
-			<b>IP Address:</b> '.$ipadd.'<br>
-			<b>Message:</b>'.$newmessage.'<br><br>
+	$newmessage 	= stripslashes( nl2br($message));
+	$location   	= getlocationname($locationid);
+	$category   	= getcategoryname($categoryid);
+
+	$adminmessage ='
+		<html>
+		<b>Ticket#:</b> '.$ticketid.' <br>
+		<b>Name:</b>    '.$name.'<br>
+		<b>Email: </b>  '.$email.'<br>
+		<b>Callback:</b><a href="tel:'.$phone.'">'.$phone.'</a><br>
+		<b>Location:</b>'.$location.'<br>
+		<b>Category:</b>'.$category.'<br>
+		<b>IP Address:</b> '.$ipadd.'<br>
+		<b>Message:</b>'.$newmessage.'<br><br>
+		
+		Click 
+		<a href="'.$link.'/viewticket.php?id='.$ticketid.'">here</a> 
 			
-			Click 
-			<a href="'.$link.'/viewticket.php?id='.$ticketid.'">here</a> 
+		to view it.<br><br>
+		</html>';
 				
-			to view it.<br><br>
-			</html>';
-					
-		$adminmessage = wordwrap ( $adminmessage, 300 );
-		$adminheaders  = 'MIME-Version: 1.0' . "\r\n";
-		$adminheaders .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$adminheaders .= 'From: gmhahelpdesk@gmha.org';
-		$adminsubject = "NEW GMHA Helpdesk Ticket";
-		$mail = mail ( $users[email], $adminsubject, $adminmessage, $adminheaders );
-
-	}
-	//Error check if email is broken
-	//if(!$mail)	echo 'Error: The email admin script did not go through';
-
+	$adminmessage = wordwrap ( $adminmessage, 300 );
+	$adminheaders  = 'MIME-Version: 1.0' . "\r\n";
+	$adminheaders .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+	$adminheaders .= 'From: gmhahelpdesk@gmha.org';
+	$adminsubject = "NEW GMHA Helpdesk Ticket";
+	global $admin_email;
+	$mail = mail ( $admin_email, $adminsubject, $adminmessage, $adminheaders );
 }
 
 //Setting the timezone (for Guam time) for date functions
