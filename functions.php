@@ -297,7 +297,7 @@ function email_user($ticketid, $email, $link, $password){
 						
 		To view your ticket, please click the following link:<br><br>
 						
-		<a href=\"$link/viewticket.php?id=$ticketid&pass=$password\">$link/viewticket.php?id=$ticketid</a><br><br>
+		<a href=\"$link/viewticket.php?id=$ticketid&pass=$password\">$link/viewticket.php?id=$ticketid&pass=$password</a><br><br>
 						
 		Please do not reply to this email.</html>";
 	
