@@ -15,6 +15,8 @@ if ($_GET){
 if ($_POST){ 
 	$ticketid = $_POST[id]; 
 	$ticketpass = $_POST[pass];
+	$_GET[id] = $_POST[id];
+	$_GET[pass] = $_POST[pass];
 }
 
 viewticket_protection($ticketid, $ticketpass);

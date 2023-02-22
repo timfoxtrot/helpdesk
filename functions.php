@@ -265,7 +265,7 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	//Disable submit button when clicked
 	$anti_jill = '<form ';
 	if($check == TRUE) $anti_jill .='id="formABC"';
-	$anti_jill .= 'action="index.php?page=submit" method="post">';
+	$anti_jill .= 'action="form.php?page=submit" method="post">';
 
 	print_r($anti_jill);
 	
@@ -282,7 +282,7 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 }
 
 //Emailing Users
-function email_user($ticketid, $email, $link){
+function email_user($ticketid, $email, $link, $password){
 	
 	//Updated: 1/20/2023
 	//By: Tim Dominguez (timfox@coufu.com)
@@ -292,10 +292,12 @@ function email_user($ticketid, $email, $link){
 		Thank you for using the GMHA Helpdesk Form.<br><br>
 			
 		Your ticket number is <b>$ticketid</b>.<br><br>
+
+		Your ticket password is <b>$password</b><br><br>
 						
 		To view your ticket, please click the following link:<br><br>
 						
-		<a href=\"$link/viewticket.php?id=$ticketid\">$link/viewticket.php?id=$ticketid</a><br><br>
+		<a href=\"$link/viewticket.php?id=$ticketid&pass=$password\">$link/viewticket.php?id=$ticketid</a><br><br>
 						
 		Please do not reply to this email.</html>";
 	
@@ -369,7 +371,7 @@ function viewticket_protection($ticketid, $ticketpass){
 		$row = $db->getrow();
 
 		if($row[password]){
-			if (!$_GET[id] OR !$_GET[pass]){
+			if (!$_GET){
 				$error = TRUE;
 			}else{
 				if($row[password] != $ticketpass) $error = TRUE;
