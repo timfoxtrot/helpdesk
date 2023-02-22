@@ -122,7 +122,7 @@ function submit_data($link) {
 			//message
 			$setmessage ="
 				<html>
-				Your ticket <a href=\"$link/viewticket.php?id=$_POST[ticketid]\"> (#$_POST[ticketid])</a> has been closed with the following message:<br><br>
+				Your ticket <a href=\"$link/viewticket.php?id=$_POST[ticketid]&pass=$row[password]\"> #$_POST[ticketid]</a> has been closed with the following message:<br><br>
 				<b>Subject:</b> $_POST[subject]<br>
 				<b>Message:</b> \"$_POST[message]\" - $username<br><br>
 						
@@ -157,11 +157,11 @@ function submit_data($link) {
 				$setmessage ="
 					<html>
 					
-					Someone has posted a reply to your ticket (<b>$_POST[ticketid]</b>).<br><br>
+					Someone has posted a reply to your ticket #<b>$_POST[ticketid]</b>.<br><br>
 										
 					To view your ticket, please click the following link:<br><br>
 									
-					<a href=\"$link/viewticket.php?id=$_POST[ticketid]\">$link/viewticket.php?id=$_POST[ticketid]</a><br><br>
+					<a href=\"$link/viewticket.php?id=$_POST[ticketid]&pass=$row2[password]\">$link/viewticket.php?id=$_POST[ticketid]&pass=$row2[password]</a><br><br>
 									
 					Please do not reply to this email.</html>";
 					
