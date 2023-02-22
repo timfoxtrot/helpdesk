@@ -94,7 +94,7 @@ function submit($link){
 		$table = new Ctable;
 		$table->setwidth(600);
 		$table->pushth('Success!');
-		$table->push("<center><br><br>Thank you for using the GMHA Helpdesk Form. Your ticket # is <b>$ticketid</b> and password is <b>$password</b>Click 
+		$table->push("<center><br><br>Thank you for using the GMHA Helpdesk Form. Your ticket # is <b>$ticketid</b> and password is <b>$password</b><br>Click 
 							<a href=\"viewticket.php?id=$ticketid&pass=$password\">here</a> to view your ticket. <br><br>");
 		$table->show();
 		
