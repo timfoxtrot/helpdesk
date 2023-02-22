@@ -364,15 +364,17 @@ function viewticket_protection($ticketid, $ticketpass){
 	//Check to see if user is logged in
 	if (!$_COOKIE[userid]){
 		
-		if (!$_GET[id] OR !$_GET[pass]){
-			$error = TRUE;
-		}else{
-			//check ticket password
-			$db = new myDB;
-			$db->query("SELECT password FROM tickets where ticketid = '$ticketid'");
-			$row = $db->getrow();
-			
-			if($row[password] != $ticketpass) $error = TRUE;
+		//check ticket password
+		$db = new myDB;
+		$db->query("SELECT password FROM tickets where ticketid = '$ticketid'");
+		$row = $db->getrow();
+
+		if($row[password]){
+			if (!$_GET[id] OR !$_GET[pass]){
+				$error = TRUE;
+			}else{
+				if($row[password] != $ticketpass) $error = TRUE;
+			}
 		}
 	}
 
