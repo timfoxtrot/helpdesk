@@ -3,7 +3,7 @@
 //	URL: 		report.php
 //	Purpose:	Generating Reports
 //  Author: 	Tim Fox Dominguez
-//  Date:       3/19/2013	
+//  Date:       2/24/2023
 //-------------------------------------------------------------------------
 
 include 'functions.php';
@@ -16,6 +16,7 @@ switch ($_GET[action]){
 	case 'date';		members_only();		report_date();		break;
 	case 'category';	members_only();		report_category();	break;
 	case 'user';		members_only();		report_user();		break;
+	case 'generate';	members_only();		generate();			break;
 }
 function report(){
 	//----------------------//
@@ -25,27 +26,71 @@ function report(){
 	
 	ticket_top( 'Generate a Report', '600');
 	
-	//Report by Dates
-	$startdate = '<input type="text" name="startdate" id="datepicker" size="28">';
-	$enddate   = '<input type="text" name="enddate"  id="datepicker2" size="28">';
+	//Options
+	$startdate  = '<input type="text" name="startdate" id="datepicker" size="15">';
+	$enddate    = '<input type="text" name="enddate"  id="datepicker2" size="15">';
+	$box_open   = '<input type="checkbox" name="open"><label for="open">Open</label>';
+	$box_closed = '<input type="checkbox" name="closed"><label for="closed">Closed</label>';
+	
+	//Categories
+	$category  = '<select name="category">';
+	$db = new MyDB;
+	$db->query('SELECT * FROM categories WHERE active =1 ORDER by name ASC');
+	$category .= '<option value="all">All</option>';
+	while($row = $db->getrow()){
+		$category .= '<option value="'.$row[categoryid].'">'.$row[name].'</option>';
+	}
+	$category .= '</select>';
+
+	//Users
+	$users  = '<select name="users">';
+	$db = new MyDB;
+	$db->query('SELECT * FROM users WHERE active=1 ORDER by fullname ASC');
+	$users .= '<option value="all">All</option>';
+	while($row = $db->getrow()){
+		$users .= '<option value="'.$row[id].'">'.$row[fullname].'</option>';
+	}
+	$users .= '</select>';
+
 
 	$table = new CTable;
 	$table->setwidth(600);
 	$table->setspacing(0);
-	$table->setpadding(6);
-	$table->setcolprops ( 'width="90" bgcolor="ebebeb"', 'width="500"', 'width="10" bgcolor="ebebeb"');
-	$table->pushth ( '<b>Report by Date</b>');
-	$table->push('<b>Start Date:</b>',''.$startdate.'' );
-	$table->push('<b>End Date:</b>',''.$enddate.'' );
-	echo '<form action="report.php?action=date" method="post">';
+	$table->setpadding(10);
+	$table->pushth ( '<b>Input Dates</b>','<b>Options</b>');
+	$table->push('
+		<form action="report.php?action=generate" method="post">
+			<table>
+				<tr>
+					<td>Start Date:</td>
+					<td>'.$startdate.'</td>
+				</tr>
+				<tr>
+					<td>End Date:</td>
+					<td>'.$enddate.'</td>
+				</tr>
+			</table>',
+		'
+		<table>
+			<tr>
+				<td>Status</td><td>'.$box_open.''.$box_closed.'</td>
+			</tr>
+			<tr>
+				<td>Category:</td><td>'.$category.'</td>
+			</tr>
+			<tr>
+				<td>Users:</td><td>'.$users.'</td>
+			</tr>
+		</table>
+		');
 	$table->show();
 	addcoolline(600);
-	echo "<input type=\"submit\" value=\"Submit Dates\" /> ";
-	echo "<input type=\"reset\" value=\"Reset\">";
-	echo "</form>";
+	echo '<input type="submit" value="Submit" />';
+	echo '<input type="reset" value="Reset">';
+	echo '</form>';
 	echo '<br><br>';
 	
-	//Report by Category
+	/*Report by Category
 	$category = '<select name="category">';
 	$db = new MyDB;
 	$db->query( 'SELECT * FROM categories WHERE active = 1 ORDER by name ASC' ); 
@@ -63,7 +108,7 @@ function report(){
 	$table->show();
 	echo "</form>";
 	addcoolline(600);
-	echo '<br><br>';
+	echo '<br><br>';*/
 	
 	/*Leaderboard
 	if ($_COOKIE[userid]){
@@ -82,6 +127,117 @@ function report(){
 		$table->show();
 		addcoolline(250);
 	}*/
+}
+
+
+function generate(){
+	
+	ticket_top();
+
+	$db = new MyDB;
+	
+	$startdate = strtotime($_POST[startdate]);
+	$enddate   = strtotime($_POST[enddate]);
+	
+	if($_POST[startdate] OR $_POST[enddate] OR $_POST[open] OR $_POST[closed] OR $_POST[category] OR $_POST[users])
+		$where = 'WHERE';
+
+	if($_POST[startdate] && $_POST[enddate]){
+		$where .= ' datecreated between '.$startdate.' AND '.$enddate.'';
+	}
+
+
+	//if fields blank select everything
+	$query = 'SELECT * FROM tickets '.$where.'';
+	
+	$db->query($query);
+	$numoftickets = $db->getnumrows();
+
+	$table = new CTable;
+	$table->setwidth(600);
+	$table->setspacing(0);
+	$table->setpadding(6);
+	$table->pushth( 'TEST');
+	$table->show();
+	echo '<br>';
+	
+	$table = new CTable;
+	$table->setwidth(900);
+	$table->setspacing(0);
+	$table->setpadding(6);
+	$table->setcolprops( 'width="20" class="tdtable"', 'width="430" bgcolor="ebebeb" class="tdtable"', 
+						'width="100" bgcolor="white" class="tdtable"', 
+						'width="100" bgcolor="ebebeb" class="tdtable"', 
+						'width="25" class="tdtable"','width="100" class="tdtableright" bgcolor="ebebeb"');
+	$table->pushth( "<center>#", "Contents","<center>Submitted by", "<center>Replies", "<center>Status", "<center>Options");
+	while ( $row = $db->getrow() ) 
+	{	
+		$status = "---";
+		
+		if ( strlen( $row[message] ) > 60)	
+			$dotdot="...";
+		else 
+			$dotdot= FALSE;
+		if ( $row[newstatus] == 0 )
+			$status = "<img src=\"new.gif\">";
+		if ( $row[level] == 1)
+			$status = "<img src=\"urgent.gif\" width=15 height=15>";
+		if ($row[solved] == 1){
+			$status = "<img src=\"check.gif\">";
+			$status.= '<br><font size="1"><i>Closed by:<br>'.getusername($row[whosolved]).'</font>';
+		} else {
+			if ( $row[assignedto] != 0)
+				$status.= '<br><font size="1"><i>Assigned to:<br>'.getusername($row[assignedto]).'</font>';
+		}
+		
+		//The options menu
+		
+		//Not urgent and unsolved
+		if ( $row[level] == 2 && $row[solved] == 2) 
+			$menu = "<font size=\"2\"><a href=\"admin.php?action=urgent&id=$row[ticketid]\">Urgent</a> | 
+						<a href=\"admin.php?action=solved&id=$row[ticketid]\">Close</a></font>";
+		//Urgent and unsolved
+		if ( $row[level] == 1 &&  $row[solved] == 2) 
+			$menu = "<a href=\"admin.php?action=noturgent&id=$row[ticketid]\">Not urgent</a><br>
+						<a href=\"admin.php?action=solved&id=$row[ticketid]\">Close</a>";
+		
+		//Solved Tickets
+		if ( $row[solved] == 1) 
+			$menu = "<a href=\"admin.php?action=unsolve&id=$row[ticketid]\">Reopen</a>";
+			
+			
+		//number of replies
+		$result = mysql_query( "SELECT * FROM posts WHERE ticketid = '$row[ticketid]' AND active='1'");
+		$posts = mysql_num_rows ($result);
+		
+		//getting the name of the user that posted last
+		$userresult = mysql_query( "SELECT * FROM posts WHERE ticketid= '$row[ticketid]' AND active='1' ORDER by datecreated DESC");
+		$userid = mysql_fetch_array ( $userresult, MYSQL_ASSOC );
+		if ($userid){
+			$username = getusername( $userid[userid] );
+			$reply    = 'Last reply by: '.$username.'';
+		}
+		else{
+			$reply = '';
+		}
+	
+		//messages and date
+		$message  = stripslashes( substr ( "$row[message]", 0, 60 ));
+		$postdate = date( 'm/d/y, g:ia', $row[datecreated]);
+		
+		//creating the table
+		$table->push ( "<center>$row[ticketid]", "<i><a href=\"viewticket.php?id=$row[ticketid]\">$message</a>$dotdot", 
+						"<p align=\"right\"><b><a href=\"mailto:$row[email]\">$row[name]</a></b><br><font size=\"1\">
+						<i>$postdate</i></font>", "<p align=\"right\">$posts<br><font size=\"1\">
+						<i>$reply</i></font>", " <center>$status", "<center><font size=\"1\">$menu" );
+		
+	}
+	$table->show();	
+	
+
+
+
+
 }
 function report_date(){
 
