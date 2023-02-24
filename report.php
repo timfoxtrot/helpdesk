@@ -65,7 +65,7 @@ function report(){
 	addcoolline(600);
 	echo '<br><br>';
 	
-	//Leaderboard
+	/*Leaderboard
 	if ($_COOKIE[userid]){
 		$db = new myDB;
 		$table = new CTable;
@@ -81,7 +81,7 @@ function report(){
 		}
 		$table->show();
 		addcoolline(250);
-	}
+	}*/
 }
 function report_date(){
 

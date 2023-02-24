@@ -44,15 +44,15 @@ function main_submit()
 	$table->push ( "<b>Subject:</b> ", $input , "" );
 	$table->push ( "<b>Message:</b> ", inputtextarea ( "message", "", "74", "9" ) );
 	
-	echo "<form action=\"post.php?page=submit\" method=\"post\">";
+	echo '<form id="formABC" action="post.php?page=submit" method="post">';
 	$table->show();
 	addcoolline( 600 );
-	echo "<br>";
-	echo "<input type=\"hidden\" name=\"ticketid\" value=\"$_GET[ticketid]\">";
-	echo "<input type=\"hidden\" name=\"userid\" value=\"$_COOKIE[userid]\">";
-	echo "<input type=\"submit\" value=\"Submit\">";
-	echo "<input type=\"reset\" value=\"Reset\">";
-	echo "</form>";
+	echo '<br>';
+	echo '<input type="hidden" name="ticketid" value="'.$_GET[ticketid].'">';
+	echo '<input type="hidden" name="userid" value="'.$_COOKIE[userid].'">';
+	echo '<input type="submit" value="Submit" id="btnSubmit">';
+	echo '<input type="reset" value="Reset">';
+	echo '</form>';
 }
 //-------------------------------------------------------------------------
 //	URL: 		post.php?page=submit
@@ -100,8 +100,7 @@ function submit_data($link) {
 			$db = new MyDB;
 			$db->insertarray( "posts", $insertitem );
 			
-			
-			//scoreboard
+			/*scoreboard
 			$scoreboard = mysql_query( 'SELECT * FROM scoreboard WHERE userid = '.$_COOKIE[userid].'');
 			$scoreboard = mysql_fetch_array($scoreboard);
 			if ( $scoreboard ){
@@ -113,12 +112,13 @@ function submit_data($link) {
 				$insert[score]  = 1;
 				$db = new MyDB;
 				$db->insertarray( "scoreboard" , $insert );
-			}
+			}*/
 			
 			//Sending Mail when the ticket is closed
 			$username = getusername($_COOKIE[userid]);
 			$db->query( 'SELECT email FROM tickets WHERE ticketid = '.$_POST[ticketid].'');
 			$row = $db->getrow();
+
 			//message
 			$setmessage ="
 				<html>
@@ -131,8 +131,9 @@ function submit_data($link) {
 			$setmessage = wordwrap ( $setmessage, 300 );
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-			$headers .= 'From: gmhahelpdesk@gmha.org';
-			$subject = "Solved - GMHA Helpdesk Ticket";
+			global $config_from_email;
+			$headers .= 'From: ' . $config_from_email;
+			$subject = "Closed - GMHA Helpdesk";
 			$mail = mail ( $row[email], $subject, $setmessage, $headers );
 			
 			redirect( "admin.php", 0 );
@@ -153,7 +154,7 @@ function submit_data($link) {
 			$db->query ("SELECT * FROM tickets WHERE ticketid = '$_POST[ticketid]'");
 			$row2 = $db->getrow();
 			
-			if ( $row2[email] ){
+			if ($row2[email] ){
 				$setmessage ="
 					<html>
 					
@@ -168,8 +169,9 @@ function submit_data($link) {
 				$setmessage = wordwrap ( $setmessage, 300 );
 				$headers  = 'MIME-Version: 1.0' . "\r\n";
 				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-				$headers .= 'From: gmhahelpdesk@gmha.org';
-				$subject = "GMHA Helpdesk Reply";
+				global $config_from_email;
+				$headers .= 'From: ' . $config_from_email;
+				$subject = "Reply - GMHA Helpdesk";
 				$mail = mail ( $row2[email], $subject, $setmessage, $headers );
 					
 				//Returning an error if the email didn't send. 

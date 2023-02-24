@@ -239,14 +239,12 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 		$selected = NULL;
 		if($categoryid == $row[categoryid])	$selected = 'selected="selected"';
 		$category .= '<option value ="'.$row[categoryid].'"'.$selected.'>'.$row[name].'</option>';
-		
 	}
 	$category .= '</select>';
 
 	//Phone Formatting
 	$callbacknumber = '<input type="text" name="phonenumber" value="'.$phone.'" id="phonenumber" size="16">';
 
-		
 	//Setting Values for the Form
 	$table = new CTable;
 	$table->setwidth(600);
