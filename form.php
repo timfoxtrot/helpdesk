@@ -138,6 +138,11 @@ function worklogsubmit(){
 	$db = new MyDB;
 	$db->insertarray ( "tickets", $insertitem );
 
+	//Page Message
+	$db->query("SELECT * FROM tickets WHERE datecreated = '$datecreated'");
+	$row 	  = $db->getrow();
+	$ticketid = $row[ticketid];
+
 	email_admin($ticketid, $name, $email, $message, $phone, $location, $category, $ipadd, $link);
 
 	redirect("admin.php",0);
