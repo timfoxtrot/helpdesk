@@ -13,9 +13,6 @@ switch ($_GET[action]){
 
 	//All actions within this page
 	default:			members_only();		report();			break;
-	case 'date';		members_only();		report_date();		break;
-	case 'category';	members_only();		report_category();	break;
-	case 'user';		members_only();		report_user();		break;
 	case 'generate';	members_only();		generate();			break;
 }
 function report(){
@@ -129,21 +126,26 @@ function report(){
 	}*/
 }
 
-
 function generate(){
+
+	if (!$_POST[startdate] OR !$_POST[enddate]){
+		redirect( "report.php", 2, "Missing Fields", "Please fill in all the values" );
+		exit;
+	}
 	
 	ticket_top();
 
 	$db = new MyDB;
 	
-	$startdate = strtotime($_POST[startdate]);
-	$enddate   = strtotime($_POST[enddate]);
-	
-	if($_POST[startdate] OR $_POST[enddate] OR $_POST[open] OR $_POST[closed] OR $_POST[category] OR $_POST[users])
-		$where = 'WHERE';
+	if($_POST[startdate] OR $_POST[enddate] OR $_POST[open] OR $_POST[closed] OR $_POST[category] OR $_POST[users]){
+		
+		$startdate = strtotime($_POST[startdate]);
+		$enddate   = strtotime($_POST[enddate]);
 
-	if($_POST[startdate] && $_POST[enddate]){
-		$where .= ' datecreated between '.$startdate.' AND '.$enddate.'';
+		if($_POST[category] != "all") $category = 'AND category ='.$_POST[category].' ';
+		if($_POST[users]    != "all") $users    = 'AND solved   ='.$_POST[users].'';
+
+		$where = 'WHERE datecreated between '.$startdate.' AND '.$enddate.' '.$category.''.$users.'';
 	}
 
 
@@ -233,11 +235,6 @@ function generate(){
 		
 	}
 	$table->show();	
-	
-
-
-
-
 }
 function report_date(){
 
