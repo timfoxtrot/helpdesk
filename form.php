@@ -13,6 +13,108 @@ switch ( $_GET[page] ){
 	case 'submit';	submit($server_url);	break;
 }
 
+//Default Page. Main Form
+function ticketform(){
+
+	//Updated 2/16/2023
+	//By: Tim Dominguez (timfox@coufu.com)
+
+	//Top Banner
+	ticket_top();
+	
+	//Blank Form, no values
+	submissionform();
+	
+	//Footer
+	ticket_bottom();
+}
+
+//Submission Form
+function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = NULL, $locationid = NULL, $categoryid = NULL, $errorname = FALSE, $erroremail = FALSE, $errorphone = FALSE, $errormessage = FALSE, $check = FALSE){
+	
+	//Updated 1/18/2023
+	//By: Tim Dominguez (timfox@coufu.com)
+
+	//Highlighting Boxes for Errors
+	if ($errorname    == TRUE) $nameclass 	 = 'textboxerror';
+	if ($erroremail   == TRUE) $emailclass 	 = 'textboxerror';
+	if ($errorphone   == TRUE) $phoneclass 	 = 'textboxerror';
+	if ($errormessage == TRUE) $messageclass = 'textboxerror';
+
+	//Pending Tickets
+	$db      = new MyDB;
+	$pending = mysql_query( "SELECT * FROM tickets WHERE solved='2' AND active='1'");
+	$pending = mysql_num_rows($pending);
+	
+	//Urgent Tickets
+	$urgent = mysql_query ("SELECT * FROM tickets WHERE level ='1' AND solved ='2' AND active='1'");
+	$urgent = mysql_num_rows($urgent);
+	
+	//Solved
+	$solved = mysql_query("SELECT * FROM tickets WHERE solved ='1' AND active='1'");
+	$solved = mysql_num_rows($solved);
+	
+	//Text Box
+	$inputtext = inputtext( 'name', ''.$name.'', '25','', ''.$nameclass.'');
+
+	//Locations
+	$location  =  '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
+	$location .=  '<select name="location" class="chzn-select">';
+	$db->query('SELECT * FROM locations ORDER by name ASC');
+	while($row = $db->getrow()){
+		$selected = NULL;
+		if($locationid == $row[locationid])	$selected = 'selected="selected"';
+		$location .= '<option value ="'.$row[locationid].'" '.$selected.'>'.$row[name].'</option>';
+	}
+	$location .= '</select>';
+	
+	//Categories
+	$category = '<select name ="category">';
+	$db->query('SELECT * FROM categories WHERE active = 1 ORDER by name ASC');
+	while($row = $db->getrow()){
+		$selected = NULL;
+		if($categoryid == $row[categoryid])	$selected = 'selected="selected"';
+		$category .= '<option value ="'.$row[categoryid].'"'.$selected.'>'.$row[name].'</option>';
+	}
+	$category .= '</select>';
+
+	//Phone Formatting
+	$callbacknumber = '<input type="text" name="phonenumber" value="'.$phone.'" id="phonenumber" size="16">';
+
+	//Setting Values for the Form
+	$table = new CTable;
+	$table->setwidth(600);
+	$table->setspacing(0);
+	$table->setcolprops('width="90" bgcolor="ebebeb"', 'width="500"','width="10" bgcolor="ebebeb"');
+	if($_COOKIE[userid]){
+		$table->pushth('<b>Submit</b>', '<p align="right">Pending: '.$pending.' | Urgent: '.$urgent.' | Solved: '.$solved.'', '' );
+	} else {
+		$table->pushth('<b>Submit</b>', '', '' );
+	}
+	$table->push('<b>Name:</b>', ''.$inputtext.' <b>Location:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
+	$table->push('<b>Email:</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number:</b> &nbsp;'.$callbacknumber);
+	$table->push('<b>Category:</b>', ''.$category.'');
+	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "74", "9", "$messageclass"));
+	
+	//Disable submit button when clicked
+	$anti_jill = '<form ';
+	if($check == TRUE) $anti_jill .='id="formABC"';
+	$anti_jill .= 'action="form.php?page=submit" method="post">';
+
+	print_r($anti_jill);
+	
+	//Creating the Form
+	$table->show();
+	addcoolline(600);
+	echo '<br>';
+	echo '<input type="hidden" name="check" value="'.$check.'">';
+	echo '<input type="submit" value ="Submit" id="btnSubmit">';
+	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '<input type="reset" value ="Reset">';
+	echo '</form>';
+
+}
+
 //Data Handling
 function submit($link){
 
