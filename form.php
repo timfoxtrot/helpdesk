@@ -9,8 +9,10 @@ include 'functions.php';
 
 //Page Handling
 switch ( $_GET[page] ){
-	default:		ticketform();			break;
-	case 'submit';	submit($server_url);	break;
+	case 'submit';		  submit($server_url);					 break;
+	case 'worklog';	      members_only(); 		worklog();		 break;
+	case 'worklogsubmit'; members_only();		worklogsubmit(); break;
+	default:			  ticketform();							 break;
 }
 
 //Default Page. Main Form
@@ -29,7 +31,115 @@ function ticketform(){
 	ticket_bottom();
 }
 
-//Submission Form
+//Logging tickets for end users 
+function worklog(){
+	
+	ticket_top();
+
+	//Text Box
+	$inputtext = inputtext( 'name', ''.$name.'', '25','', ''.$nameclass.'');
+
+	$db = new MyDB;
+
+	//Locations
+	$location  =  '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
+	$location .=  '<select name="location" class="chzn-select">';
+	$db->query('SELECT * FROM locations ORDER by name ASC');
+	while($row = $db->getrow()){
+		$selected = NULL;
+		if($locationid == $row[locationid])	$selected = 'selected="selected"';
+		$location .= '<option value ="'.$row[locationid].'" '.$selected.'>'.$row[name].'</option>';
+	}
+	$location .= '</select>';
+	
+	//Categories
+	$category = '<select name ="category">';
+	$db->query('SELECT * FROM categories WHERE active = 1 ORDER by name ASC');
+	while($row = $db->getrow()){
+		$selected = NULL;
+		if($categoryid == $row[categoryid])	$selected = 'selected="selected"';
+		$category .= '<option value ="'.$row[categoryid].'"'.$selected.'>'.$row[name].'</option>';
+	}
+	$category .= '</select>';
+
+	//Phone Formatting
+	$callbacknumber = '<input type="text" name="phonenumber" value="'.$phone.'" id="phonenumber" size="16">';
+
+	//Setting Values for the Form
+	$table = new CTable;
+	$table->setwidth(600);
+	$table->setspacing(0);
+	$table->setcolprops('width="300" bgcolor="ebebeb"', 'width="500"','width="10" bgcolor="ebebeb"');
+	$table->pushth('<b>WORKLOG</b>', '', '' );
+	$table->push('<b>End User:</b>', ''.$inputtext.' <b>Location:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
+	$table->push('<b>UserEmail:</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number:</b> &nbsp;'.$callbacknumber);
+	$table->push('<b>Category:</b>', ''.$category.'');
+	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "74", "9", "$messageclass"));
+	
+	//Disable submit button when clicked
+	$anti_jill = '<form ';
+	if($check == TRUE) $anti_jill .='id="formABC"';
+	$anti_jill .= 'action="form.php?page=worklogsubmit" method="post">';
+
+	print_r($anti_jill);
+	
+	//Creating the Form
+	$table->show();
+	addcoolline(630);
+	echo '<br>';
+	echo '<input type="hidden" name="check" value="'.$check.'">';
+	echo '<input type="submit" value ="Submit" id="btnSubmit">';
+	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '<input type="reset" value ="Reset">';
+	echo '</form>';
+
+	ticket_bottom();
+
+}
+
+function worklogsubmit(){
+
+	//$_POST variables
+	$name 		= $_POST[name];			$phone    = $_POST[phonenumber];
+	$message 	= $_POST[message];		$email    = $_POST[email];
+	$location	= $_POST[location]; 	$category = $_POST[category];
+
+	//More Variables
+	//necessary variables
+	$ip      		= $REMOTE_ADDR;
+	$ipadd  		= $_SERVER['REMOTE_ADDR'];
+	$message 		= addslashes($message);
+	$datecreated 	= time();
+	$assignedto = $_COOKIE[userid];
+	$password = strtoupper(substr(md5(time()), -4));
+
+	//inserting database
+	$insertitem[active]     = 1;
+	$insertitem[name]		= $name;
+	$insertitem[email]		= $email;
+	$insertitem[phonenumber]= $phone;
+	$insertitem[location]   = $location;
+	$insertitem[category]   = $category;
+	$insertitem[message]	= $message;
+	$insertitem[newstatus]  = 0;
+	$insertitem[level] 		= 2;
+	$insertitem[solved]		= 2;
+	$insertitem[ip]  		= $ipadd;
+	$insertitem[datecreated]= $datecreated;
+	$insertitem[assignedto] = $assignedto;
+	$insertitem[datesolved] = "";
+	$insertitem[whosolved]  = "";
+	$insertitem[password]   = $password;
+
+	//Connecting to Database
+	$db = new MyDB;
+	$db->insertarray ( "tickets", $insertitem );
+
+	redirect("admin.php",0);
+
+}
+
+//Submission Form for regular tickets
 function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = NULL, $locationid = NULL, $categoryid = NULL, $errorname = FALSE, $erroremail = FALSE, $errorphone = FALSE, $errormessage = FALSE, $check = FALSE){
 	
 	//Updated 1/18/2023
@@ -126,8 +236,6 @@ function submit($link){
 	$message 	= $_POST[message];		$email    = $_POST[email];
 	$location	= $_POST[location]; 	$category = $_POST[category];
 	
-	$password = strtoupper(substr(md5(time()), -4));
-	
 	//Error Check
 	if(!$name)	$errorname 	= TRUE;  if(!$phone)   $errorphone   = TRUE;
 	if(!$email)	$erroremail = TRUE;  if(!$message) $errormessage = TRUE;
@@ -164,6 +272,7 @@ function submit($link){
 		$ipadd  		= $_SERVER['REMOTE_ADDR'];
 		$message 		= addslashes($message);
 		$datecreated 	= time();
+		$password = strtoupper(substr(md5(time()), -4));
 		
 		//inserting database
 		$insertitem[active]     = 1;

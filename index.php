@@ -23,13 +23,16 @@ function main(){
     $ticket_number   = '<input type = "text" name="id"  size="5">';
     $ticket_password = '<input type = "text" name="pass" size="5">';
 
+    if($_COOKIE[userid]) $workloglink = '<br><a href="form.php?page=worklog">Submit Worklog</a>';
+
     $table = new Ctable;
     $table->setwidth(600);
     $table->setspacing(0);
 	$table->setpadding(10);
     $table->pushth('Helpful Links', 'Access Ticket');
     $table->push('
-        <br><a href="form.php">Submit New Ticket</a>
+        <br><a href="form.php">Submit New Ticket</font></a>
+        '.$workloglink.'
         <br><a href="https://gmha.org:2096">GMHA Webmail</a>
         <br><br>'
 
