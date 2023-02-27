@@ -77,9 +77,7 @@ function worklog(){
 	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "74", "9", "$messageclass"));
 	
 	//Disable submit button when clicked
-	$anti_jill = '<form ';
-	if($check == TRUE) $anti_jill .='id="formABC"';
-	$anti_jill .= 'action="form.php?page=worklogsubmit" method="post">';
+	echo '<form id="formABC" action="form.php?page=worklogsubmit" method="post">';
 
 	print_r($anti_jill);
 	
@@ -87,7 +85,6 @@ function worklog(){
 	$table->show();
 	addcoolline(630);
 	echo '<br>';
-	echo '<input type="hidden" name="check" value="'.$check.'">';
 	echo '<input type="submit" value ="Submit" id="btnSubmit">';
 	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	echo '<input type="reset" value ="Reset">';
