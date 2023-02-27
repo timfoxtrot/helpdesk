@@ -100,12 +100,18 @@ function worklog(){
 function worklogsubmit(){
 
 	//$_POST variables
-	$name 		= $_POST[name];			$phone    = $_POST[phonenumber];
+	$username   = getusername($_COOKIE[userid]);
+	if($_POST[name]){
+		$name = ''.$username.' on behalf of '.$_POST[name].'';
+	}else{
+		$name = $username;
+	}
+	$phone      = $_POST[phonenumber];
 	$message 	= $_POST[message];		$email    = $_POST[email];
 	$location	= $_POST[location]; 	$category = $_POST[category];
 
 	//More Variables
-	//necessary variables
+			
 	$ip      		= $REMOTE_ADDR;
 	$ipadd  		= $_SERVER['REMOTE_ADDR'];
 	$message 		= addslashes($message);
@@ -134,6 +140,8 @@ function worklogsubmit(){
 	//Connecting to Database
 	$db = new MyDB;
 	$db->insertarray ( "tickets", $insertitem );
+
+	email_admin($ticketid, $name, $email, $message, $phone, $location, $category, $ipadd, $link);
 
 	redirect("admin.php",0);
 
