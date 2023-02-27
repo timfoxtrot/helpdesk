@@ -9,10 +9,10 @@ include 'functions.php';
 
 //Page Handling
 switch ( $_GET[page] ){
-	case 'submit';		  submit($server_url);					 break;
-	case 'worklog';	      members_only(); 		worklog();		 break;
-	case 'worklogsubmit'; members_only();		worklogsubmit(); break;
-	default:			  ticketform();							 break;
+	case 'submit';		  submit($server_url);					 			 break;
+	case 'worklog';	      members_only(); 		worklog();					 break;
+	case 'worklogsubmit'; members_only();		worklogsubmit($server_url);  break;
+	default:			  ticketform();							             break;
 }
 
 //Default Page. Main Form
@@ -94,7 +94,7 @@ function worklog(){
 
 }
 
-function worklogsubmit(){
+function worklogsubmit($link){
 
 	//$_POST variables
 	$username   = getusername($_COOKIE[userid]);
