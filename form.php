@@ -113,8 +113,8 @@ function worklogsubmit(){
 	$ipadd  		= $_SERVER['REMOTE_ADDR'];
 	$message 		= addslashes($message);
 	$datecreated 	= time();
-	$assignedto = $_COOKIE[userid];
-	$password = strtoupper(substr(md5(time()), -4));
+	$assignedto 	= $_COOKIE[userid];
+	$password		= strtoupper(substr(md5(time()), -4));
 
 	//inserting database
 	$insertitem[active]     = 1;
