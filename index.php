@@ -26,7 +26,7 @@ function main(){
     if($_COOKIE[userid]) $workloglink = '<br><a href="form.php?page=worklog">Submit Worklog</a>';
 
     $table = new Ctable;
-    $table->setwidth(1000);
+    $table->setwidth(850);
     $table->setspacing(0);
 	$table->setpadding(10);
     $table->pushth('Helpful Links', 'Access Ticket');
@@ -54,9 +54,9 @@ function main(){
         </form>'
     );
     $table->show();
-    addcoolline(1000);
+    addcoolline(850);
 
-    echo '<IFRAME WIDTH=1000 HEIGHT=700 FRAMEBORDER=0 SRC="https://app.smartsheet.com/b/publish?EQBCT=f38fc80f14e7486f83b3359ed26576e4"></IFRAME>';
+    echo '<IFRAME WIDTH=850 HEIGHT=700 FRAMEBORDER=0 SRC="https://app.smartsheet.com/b/publish?EQBCT=f38fc80f14e7486f83b3359ed26576e4"></IFRAME>';
 
 
     //Footer
