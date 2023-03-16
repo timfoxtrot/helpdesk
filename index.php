@@ -56,7 +56,7 @@ function main(){
     $table->show();
     addcoolline(850);
 
-    echo '<IFRAME WIDTH=850 HEIGHT=700 FRAMEBORDER=0 SRC="https://app.smartsheet.com/b/publish?EQBCT=f38fc80f14e7486f83b3359ed26576e4"></IFRAME>';
+    //echo '<IFRAME WIDTH=850 HEIGHT=700 FRAMEBORDER=0 SRC="https://app.smartsheet.com/b/publish?EQBCT=f38fc80f14e7486f83b3359ed26576e4"></IFRAME>';
 
 
     //Footer
