@@ -10,6 +10,7 @@ switch ($_GET[action]){
 	default: 				members_only();			admin_page(1);			break;
 	case "viewall";			members_only();			admin_page();			break;
 	case "viewclosed";		members_only();			admin_page(2);			break;
+	case "viewassign"; 		members_only();			admin_page(3);			break;
 	case "urgent";			members_only();			admin_urgent();			break;
 	case "noturgent";		members_only();			admin_noturgent();		break;
 	case "solved"; 			members_only();			admin_solved();			break;
@@ -28,7 +29,7 @@ function admin_page($view = NULL){
 	ticket_top( "Admin Page", "900", "YES");
 	
 	//Main Menu
-	echo "<center><a href=\"admin.php\">View Open</a> | <a href=\"admin.php?action=viewclosed\">View Closed</a> | <a href=\"admin.php?action=viewall\">View All</a> | <a href=\"search.php\">Search</a>";
+	echo "<center><a href=\"admin.php\">View Open</a> | <a href=\"admin.php?action=viewclosed\">View Closed</a> | <a href=\"admin.php?action=viewall\">View All</a> | <a href=\"search.php\">Search</a> | <a href=\"admin.php?action=viewassign\">View Assigned</a>";
 
 	//Database connection
 	$db = new MyDB;
@@ -38,12 +39,17 @@ function admin_page($view = NULL){
 		$view_query = "SELECT * FROM tickets WHERE active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
 	
 	//view open tickets
-	if ( $view == 1 )
+	if ($view == 1)
 		$view_query = "SELECT * FROM tickets WHERE solved = '2' AND active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
 	
 	//view closed tickets
-	if ( $view == 2 ) 
+	if ($view == 2) 
 		$view_query = "SELECT * FROM tickets WHERE solved = '1' AND active ='1' ORDER by solved DESC, datecreated DESC";
+
+	//view current user's tickets
+	if ($view == 3)
+		$view_query = "SELECT * FROM tickets WHERE solved = '2' AND active = '1' AND assignedto = $_COOKIE[userid] ORDER by solved DESC, datecreated DESC";
+
 
 	$table = new CTable;
 	$table->setwidth(900);
