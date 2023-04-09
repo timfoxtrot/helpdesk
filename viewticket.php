@@ -154,8 +154,9 @@ while ( $posts = $db->getrow() )
 	
 	if ( $posts[dateedited] )
 	{
+		$whoedited = getusername($posts[whoedited]);
 		$dateedit = date( 'm/d/y, g:ia', $posts[dateedited]);
-		$dateedited = "<i><font size=\"1\">Last edited by:$posts[whoedited]; $dateedit</font></i>";
+		$dateedited = "<i><font size=\"1\">Last edited by:$whoedited; $dateedit</font></i>";
 	}
 	
 	if( !$username ) 

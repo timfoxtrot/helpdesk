@@ -62,21 +62,16 @@ function submit_data($link) {
 
 	if ($_POST[id]) {
 		$time = time();
-		$whoedited = getusername ( $_COOKIE[userid] );
 		$db = new MyDB;
-		$result = mysql_query( "UPDATE posts SET 
-							subject = '$_POST[subject]' , 
-							message = '$_POST[message]',
-							dateedited ='$time',
-							whoedited = '$whoedited' WHERE postid = '$_POST[id]'" );
+		$result = mysql_query( 'UPDATE posts SET subject = "'.$_POST[subject].'", message = "'.$_POST[message].'", whoedited = "'.$_COOKIE[userid].'", dateedited = "'.$time.'" WHERE postid = '.$_POST[id].'');
 		$db->query( "SELECT * FROM posts WHERE postid = '$_POST[id]'");
 		$row = $db->getrow();
-		if ( !$result )
-		{
+		if (!$result ){
 			echo "Error message = " .mysql_error();
 		}
 		
-		redirect( "viewticket.php?id=$row[ticketid]", 2, "Success", "Post edited" );
+		debuginfo();
+		redirect( "viewticket.php?id=$row[ticketid]", 0, "", "" );
 	}
 	
 		
