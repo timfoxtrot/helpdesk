@@ -1,7 +1,7 @@
 <?php
 /*****************************************************************************
-*	File: 		form.php
-*	Purpose: 	Ticket submission form 
+*	File: 		index.php
+*	Purpose: 	Ticket submission form main page
 *	Author:		Tim Dominguez (timfox@coufu.com)
 ******************************************************************************/
 

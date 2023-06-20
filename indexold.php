@@ -1,7 +1,7 @@
 <?php
 /*****************************************************************************
-*	File: 		index.php
-*	Purpose: 	Dashboard page work in progress
+*	File: 		indexold.php
+*	Purpose: 	defunct dashboard page
 *	Author:		Tim Dominguez (timfox@coufu.com)
 ******************************************************************************/
 include 'functions.php';
