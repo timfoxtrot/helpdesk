@@ -111,7 +111,7 @@ function loginsubmit()
 	} 
 	
 	//Setting the cookie..Yummy.
-	setcookie ( "userid", $row[id] ); 
+	setcookie ( "userid", $row[id], time()+86400 ); 
 	
 	//Redirecting
 	redirect( "admin.php", 0 , "Login Success", "" );
