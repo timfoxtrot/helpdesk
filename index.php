@@ -291,12 +291,12 @@ function submit($link){
 	
 	
 	//1st tier of check. Missing info or confirm.
-	if($_POST[check] == FALSE OR !$name OR !$message OR !$phone OR !$email){
+	if($_POST[check] == FALSE OR !$name OR !$message OR !$phone OR !$email OR $location == 0 OR $category == 0){
 	
 		ticket_top();
 		
 		$headermessage = '<font size="4">';
-		if (!$name OR !$message OR !$phone OR !$email){
+		if (!$name OR !$message OR !$phone OR !$email OR $location == 0 OR $category == 0){
 			$headermessage .= '<color="#ff0000">Please fill in the missing fields';
 		} else{
 			$headermessage .= 'Submit this data?';
@@ -306,7 +306,7 @@ function submit($link){
 		echo $headermessage;
 		
 		//Final Check 
-		if ($name AND $message AND $phone AND $email)
+		if ($name AND $message AND $phone AND $email AND $location <> 0 AND $category <> 0)
 			$check = TRUE;
 		
 		submissionform($name, $email, $phone, $message, $location, 
