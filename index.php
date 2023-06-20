@@ -185,6 +185,7 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	//Locations
 	$location  =  '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
 	$location .=  '<select name="location" class="chzn-select">';
+    $location .=  '<option value="0"></option>';
 	$db->query('SELECT * FROM locations ORDER by name ASC');
 	while($row = $db->getrow()){
 		$selected = NULL;
@@ -194,7 +195,8 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	$location .= '</select>';
 	
 	//Categories
-	$category = '<select name ="category">';
+	$category  = '<select name ="category">';
+    $category .= '<option value = "0"></option>';
 	$db->query('SELECT * FROM categories WHERE active = 1 ORDER by name ASC');
 	while($row = $db->getrow()){
 		$selected = NULL;
@@ -206,8 +208,8 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	//Phone Formatting
 	$callbacknumber = '<input type="text" name="phonenumber" value="'.$phone.'" id="phonenumber" size="16">';
 
-    //Default Message
-    $defaultmessage = "Please fill out this form describing your issue with as much detail as possible";
+    //Placeholder Message
+    $defaultmessage = "Welcome to the GMHA IT Helpdesk. Please describe your issue with as much detail as possible";
 
 	//Setting Values for the Form
 	$table = new CTable;
@@ -219,15 +221,15 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	} else {
 		$table->pushth('', '', '' );
 	}
-	$table->push('<b>Name:</b>', ''.$inputtext.' <b>Location:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
-	$table->push('<b>Email:</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number:</b> &nbsp;'.$callbacknumber);
-	$table->push('<b>Category:</b>', ''.$category.'');
-	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "70", "9", "$messageclass", "$defaultmessage"));
+	$table->push('<b>Name</b>', ''.$inputtext.' <b>Location</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
+	$table->push('<b>Email</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number</b> &nbsp;'.$callbacknumber);
+	$table->push('<b>Category</b>', ''.$category.'');
+	$table->push("<b>Message</b> ", inputtextarea("message", "$message", "70", "9", "$messageclass", "$defaultmessage"));
 	
 	//Disable submit button when clicked
 	$anti_jill = '<form ';
 	if($check == TRUE) $anti_jill .='id="formABC"';
-	$anti_jill .= 'action="form.php?page=submit" method="post">';
+	$anti_jill .= 'action="index.php?page=submit" method="post">';
 
 	print_r($anti_jill);
 	
