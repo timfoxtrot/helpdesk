@@ -74,7 +74,7 @@ function worklog(){
 	$table->setspacing(0);
 	$table->setcolprops('width="300" bgcolor="ebebeb"', 'width="500"','width="10" bgcolor="ebebeb"');
 	$table->pushth('<b>WORKLOG</b>', '', '' );
-	$table->push('<b>End User:</b>', ''.$inputtext.' <b>Location:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
+	$table->push('<b>End User:</b>', ''.$inputtext.' <b>Location:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
 	//$table->push('<b>UserEmail:</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number:</b> &nbsp;'.$callbacknumber);
 	$table->push('<b>Category:</b>', ''.$category.'');
 	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "70", "9", "$messageclass"));
