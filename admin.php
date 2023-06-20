@@ -29,7 +29,7 @@ function admin_page($view = NULL){
 	ticket_top( "Admin Page", "900", "YES");
 	
 	//Main Menu
-	echo "<center><a href=\"index.php?page=worklog\">Worklog</a> |<a href=\"admin.php\">View Open</a> | <a href=\"admin.php?action=viewclosed\">View Closed</a> | <a href=\"admin.php?action=viewall\">View All</a> | <a href=\"search.php\">Search</a> | <a href=\"admin.php?action=viewassign\">View Assigned</a>";
+	echo "<br><center><a href=\"admin.php\">View Open</a> | <a href=\"admin.php?action=viewclosed\">View Closed</a> | <a href=\"admin.php?action=viewall\">View All</a> | <a href=\"search.php\">Search</a> | <a href=\"admin.php?action=viewassign\">View Assigned</a>";
 
 	//Database connection
 	$db = new MyDB;
