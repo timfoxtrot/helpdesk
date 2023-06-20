@@ -836,10 +836,10 @@ function inputtext( $name, $value = "", $size = 0, $maxlength = 0, $class = "tex
 //	Function:	inputtextarea
 //	Purpose:	Returns a input text HTML tag
 //-----------------------------------------------------------------------------
-function inputtextarea( $name, $value = "", $cols = 50, $rows = 10, $class = "textarea" )
+function inputtextarea( $name, $value = "", $cols = 50, $rows = 10, $class = "textarea", $placeholder = "" )
 {
 	$sizestr = ( $size ? "size=\"$size\"" : "" );
-	$result = "<textarea name=\"$name\" cols=$cols rows=$rows class=$class>$value</textarea>";
+	$result = "<textarea name=\"$name\" cols=$cols rows=$rows class=$class placeholder=\"$placeholder\">$value</textarea>";
 	return $result;
 }
 

@@ -159,6 +159,8 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	//By: Tim Dominguez (timfox@coufu.com)
 
 	//Highlighting Boxes for Errors
+    $messageclass = "textarea";
+
 	if ($errorname    == TRUE) $nameclass 	 = 'textboxerror';
 	if ($erroremail   == TRUE) $emailclass 	 = 'textboxerror';
 	if ($errorphone   == TRUE) $phoneclass 	 = 'textboxerror';
@@ -204,20 +206,23 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	//Phone Formatting
 	$callbacknumber = '<input type="text" name="phonenumber" value="'.$phone.'" id="phonenumber" size="16">';
 
+    //Default Message
+    $defaultmessage = "Please fill out this form describing your issue with as much detail as possible";
+
 	//Setting Values for the Form
 	$table = new CTable;
 	$table->setwidth(600);
 	$table->setspacing(0);
 	$table->setcolprops('width="90" bgcolor="ebebeb"', 'width="500"','width="10" bgcolor="ebebeb"');
 	if($_COOKIE[userid]){
-		$table->pushth('<b>Submit</b>', '<p align="right">Pending: '.$pending.' | Urgent: '.$urgent.' | Solved: '.$solved.'', '' );
+		$table->pushth('', '<p align="right">Pending: '.$pending.' | Urgent: '.$urgent.' | Solved: '.$solved.'', '' );
 	} else {
-		$table->pushth('<b>Submit</b>', '', '' );
+		$table->pushth('', '', '' );
 	}
 	$table->push('<b>Name:</b>', ''.$inputtext.' <b>Location:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
 	$table->push('<b>Email:</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number:</b> &nbsp;'.$callbacknumber);
 	$table->push('<b>Category:</b>', ''.$category.'');
-	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "70", "9", "$messageclass"));
+	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "70", "9", "$messageclass", "$defaultmessage"));
 	
 	//Disable submit button when clicked
 	$anti_jill = '<form ';
