@@ -105,10 +105,15 @@ function loginsubmit()
 			ticket_bottom();
 			exit; //the kill command hehe
 		}
-		
-		
 		ticket_bottom();
 	} 
+
+	//Logging
+	$insertlog[userid] = $row[id];
+	$insertlog[date]   = time();
+
+	$db = new MyDB;
+	$db->insertarray("log", $insertlog);
 	
 	//Setting the cookie..Yummy.
 	setcookie ( "userid", $row[id], time()+86400 ); 
