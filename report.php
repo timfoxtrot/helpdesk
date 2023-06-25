@@ -109,6 +109,7 @@ function report_date(){
 		$where 		= 'datecreated >'.$startdate.' AND datecreated < '.$tomorrow.' AND active = "1" ORDER by level ASC, solved DESC, datecreated DESC';
 		//$header 	= '<center>'.$numberoftickets.' Tickets from '.$_POST[startdate].''; 
 	} else{
+		$enddate    = $enddate + 86400;
 		$where 		= 'datecreated >= '.$startdate.' AND datecreated <= '.$enddate.' AND active ="1" ORDER by level ASC, solved DESC, datecreated DESC';
 		//$header 	= '<center>Tickets from '.$_POST[startdate].' to '.$_POST[enddate].'';
 	}
