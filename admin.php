@@ -33,6 +33,7 @@ function admin_page($view = NULL){
 
 	//Database connection
 	$db = new MyDB;
+
 	
 	//view all
 	if ($view == NULL)
@@ -43,13 +44,15 @@ function admin_page($view = NULL){
 		$view_query = "SELECT * FROM tickets WHERE solved = '2' AND active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
 	
 	//view closed tickets
-	if ($view == 2) 
+	if ($view == 2){
 		$view_query = "SELECT * FROM tickets WHERE solved = '1' AND active ='1' ORDER by solved DESC, datecreated DESC";
+	}
 
 	//view current user's tickets
 	if ($view == 3)
 		$view_query = "SELECT * FROM tickets WHERE solved = '2' AND active = '1' AND assignedto = $_COOKIE[userid] ORDER by solved DESC, datecreated DESC";
 
+	
 
 	$table = new CTable;
 	$table->setwidth(900);
@@ -71,7 +74,7 @@ function admin_page($view = NULL){
 		}
 		
 		if (strlen( $row[message]) > 60)	
-			$dotdot="...";
+			$dotdot="..";
 		else 
 			$dotdot= FALSE;
 
@@ -111,7 +114,11 @@ function admin_page($view = NULL){
 		if($posts == 0){ 
 			$num_posts = '';
 		}else{
-			$num_posts = $posts;
+			$num_posts = ''.$posts.'<br>';
+		}
+
+		if ($view == 2){
+			$num_posts = '';
 		}
 		
 		//getting the name of the user that posted last
@@ -124,6 +131,11 @@ function admin_page($view = NULL){
 		else{
 			$reply = '';
 		}
+
+		if ($view == 2){
+			$reply = ''.$userid[message].'';
+				
+		}
 	
 		//messages and date
 		$message  = stripslashes( substr ( "$row[message]", 0, 60 ));
@@ -132,7 +144,7 @@ function admin_page($view = NULL){
 		//creating the table
 		$table->push ( "<center>$row[ticketid]", "<i><a href=\"viewticket.php?id=$row[ticketid]\">$message</a>$dotdot", 
 						"<p align=\"right\"><b><a href=\"mailto:$row[email]\">$row[name]</a></b><br><font size=\"1\">
-						<i>$postdate</i></font>", "<p align=\"right\">$num_posts<br><font size=\"1\">
+						<i>$postdate</i></font>", "<p align=\"right\">$num_posts<font size=\"1\">
 						<i>$reply</i></font>", " <center>$status", "<center><font size=\"1\">$menu" );
 		
 	}
