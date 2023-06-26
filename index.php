@@ -47,6 +47,7 @@ function worklog(){
 	//Locations
 	$location  =  '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
 	$location .=  '<select name="location" class="chzn-select">';
+	$location .=  '<option value="0"></option>';
 	$db->query('SELECT * FROM locations ORDER by name ASC');
 	while($row = $db->getrow()){
 		$selected = NULL;
@@ -58,6 +59,7 @@ function worklog(){
 	//Categories
 	$category  = '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
 	$category .= '<select name ="category" class="chzn-select">';
+	$category .= '<option value = "0"></option>';
 	$db->query('SELECT * FROM categories WHERE active = 1 ORDER by name ASC');
 	while($row = $db->getrow()){
 		$selected = NULL;
