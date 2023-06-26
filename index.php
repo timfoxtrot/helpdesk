@@ -56,7 +56,8 @@ function worklog(){
 	$location .= '</select>';
 	
 	//Categories
-	$category = '<select name ="category">';
+	$category  = '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
+	$category .= '<select name ="category" class="chzn-select">';
 	$db->query('SELECT * FROM categories WHERE active = 1 ORDER by name ASC');
 	while($row = $db->getrow()){
 		$selected = NULL;
@@ -195,7 +196,8 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	$location .= '</select>';
 	
 	//Categories
-	$category  = '<select name ="category">';
+	$category  = '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
+	$category .= '<select name ="category" class="chzn-select">';
     $category .= '<option value = "0"></option>';
 	$db->query('SELECT * FROM categories WHERE active = 1 ORDER by name ASC');
 	while($row = $db->getrow()){
