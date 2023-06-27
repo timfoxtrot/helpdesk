@@ -147,13 +147,12 @@ while ( $posts = $db->getrow() )
 	$groupname   = getusergroupname ( $posts[userid] );
 	$postdate	 = date( 'm/d/y, g:ia', $posts[datecreated]);
 	$postmessage = nl2br( $posts[message] );
-	if ( $_COOKIE[userid] == $posts[userid] OR getusergroupid( $_COOKIE[userid]) == 1 ) 
+	if ($_COOKIE[userid] == $posts[userid] OR getusergroupid( $_COOKIE[userid]) == 1 ) 
 		$editdelete = "<font size=\"1\">[<a href=\"post.php?page=edit&postid=$posts[postid]\">Edit Post</a> | 
 						<a href=\"post.php?page=delete&postid=$posts[postid]\">Delete Post]";
 	
 	
-	if ( $posts[dateedited] )
-	{
+	if ($posts[dateedited]){
 		$whoedited = getusername($posts[whoedited]);
 		$dateedit = date( 'm/d/y, g:ia', $posts[dateedited]);
 		$dateedited = "<i><font size=\"1\">Last edited by:$whoedited; $dateedit</font></i>";
@@ -161,15 +160,28 @@ while ( $posts = $db->getrow() )
 	
 	if( !$username ) 
 			continue;
-	$table = new Ctable;
-	$table->setwidth( "600" );
-	$table->setspacing(0);
-	$table->setcolprops ( 'width="120" bgcolor="ebebeb"', 'width="480" valign="top"', 'bgcolor="ebebeb"');
-	$table->pushth ( "<b>$posts[subject]</b>", "<p align =\"right\">$postdate", "" );
-	$table->push ( "<b><i><font size=\"4\">$username</b></i></font><br>$groupname <br><br>$editdelete", "$postmessage <br><br><br><hr>$dateedited", "" );
-	$table->show();
-	addcoolline( "600" );
-	echo "<br>";
+
+	if ($posts[dateedited]){
+		$table = new Ctable;
+		$table->setwidth( "600" );
+		$table->setspacing(0);
+		$table->setcolprops ( 'width="120" bgcolor="ebebeb"', 'width="480" valign="top"', 'bgcolor="ebebeb"');
+		$table->pushth ( "<b>$posts[subject]</b>", "<p align =\"right\">$postdate", "" );
+		$table->push ( "<b><i><font size=\"4\">$username</b></i></font><br>$groupname <br><br>$editdelete", "$postmessage <br><br><br><hr>$dateedited", "" );
+		$table->show();
+		addcoolline( "600" );
+		echo "<br>";
+	} else {
+		$table = new Ctable;
+		$table->setwidth( "600" );
+		$table->setspacing(0);
+		$table->setcolprops ( 'width="120" bgcolor="ebebeb"', 'width="480" valign="top"', 'bgcolor="ebebeb"');
+		$table->pushth ( "<b>$posts[subject]</b>", "<p align =\"right\">$postdate", "" );
+		$table->push ( "<b><i><font size=\"4\">$username</b></i></font><br>$groupname <br><br>$editdelete", "$postmessage <br><br><br><hr>", "" );
+		$table->show();
+		addcoolline( "600" );
+		echo "<br>";
+	}
 }
 
 if ( $_COOKIE[userid] && $numberofreplies > 3 )
