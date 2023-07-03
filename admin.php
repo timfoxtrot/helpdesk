@@ -301,11 +301,14 @@ function admin_deleteuser(){
 //	Purpose:	Resets the password to "gmha2023"
 //-------------------------------------------------------------------------
 function admin_resetpw(){
-	$newpw = md5 ( "gmha2023" );
+	
+	$password = "gmha2023";
+	$newpw 	  =  md5($password);
+
 	$db = new MyDB;
 	$db->query ( "UPDATE users SET password = '$newpw' WHERE id = '$_GET[id]'" );
 	
-	redirect ( "users.php", 0, "Success", "The password has been reset to gmha2023" );
+	redirect ( "users.php", 0, "Success", "The password has been reset to $password" );
 }
 ?>
 
