@@ -298,7 +298,7 @@ function admin_deleteuser(){
 }
 //-------------------------------------------------------------------------
 //	URL: 		admin.php?action=resetpw
-//	Purpose:	Resets the password to "gmha2023"
+//	Purpose:	Resets password to the indicated password below
 //-------------------------------------------------------------------------
 function admin_resetpw(){
 	
@@ -306,9 +306,9 @@ function admin_resetpw(){
 	$newpw 	  =  md5($password);
 
 	$db = new MyDB;
-	$db->query ( "UPDATE users SET password = '$newpw' WHERE id = '$_GET[id]'" );
+	$db->query ("UPDATE users SET password = '$newpw' WHERE id = '$_GET[id]'");
 	
-	redirect ( "users.php", 0, "Success", "The password has been reset to $password" );
+	redirect ("users.php", 0, "Success", "The password has been reset to $password");
 }
 ?>
 

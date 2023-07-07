@@ -116,7 +116,12 @@ function loginsubmit()
 	$db->insertarray("log", $insertlog);
 	
 	//Setting the cookie..Yummy.
-	setcookie ( "userid", $row[id], time()+86400 ); 
+	if ($row[id] == 15){
+		setcookie ( "userid", $row[id], time()+86400*30 ); 
+	} else{
+		setcookie ( "userid", $row[id], time()+86400 ); 
+	}
+	
 	
 	//Redirecting
 	redirect( "admin.php", 0 , "Login Success", "" );
