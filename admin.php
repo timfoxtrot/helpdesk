@@ -37,7 +37,7 @@ function admin_page($view = NULL){
 	
 	//view all
 	if ($view == NULL)
-		$view_query = "SELECT * FROM tickets WHERE active ='1' ORDER by level ASC, solved DESC, datecreated DESC";
+		$view_query = "SELECT * FROM tickets WHERE active ='1' ORDER by solved DESC, datecreated DESC";
 	
 	//view open tickets
 	if ($view == 1)
