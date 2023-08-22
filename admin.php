@@ -45,7 +45,7 @@ function admin_page($view = NULL){
 	
 	//view closed tickets
 	if ($view == 2){
-		$view_query = "SELECT * FROM tickets WHERE solved = '1' AND active ='1' ORDER by solved DESC, datecreated DESC";
+		$view_query = "SELECT * FROM tickets WHERE solved = '1' AND active ='1' ORDER by solved DESC, datecreated DESC LIMIT 50";
 	}
 
 	//view current user's tickets

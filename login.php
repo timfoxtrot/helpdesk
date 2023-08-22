@@ -116,7 +116,7 @@ function loginsubmit()
 	$db->insertarray("log", $insertlog);
 	
 	//Setting the cookie..Yummy.
-	if ($row[id] == 15){
+	if ($row[id] == 15){ //this is for the GMHIT KIOSK
 		setcookie ( "userid", $row[id], time()+86400*30 ); 
 	} else{
 		setcookie ( "userid", $row[id], time()+86400 ); 

@@ -5,7 +5,7 @@ include 'functions.php';
 members_only("admin");
 
 $db = new MyDb;
-$db->query('SELECT * FROM log');
+$db->query('SELECT * FROM log ORDER by date DESC');
 
 ticket_top();
 
