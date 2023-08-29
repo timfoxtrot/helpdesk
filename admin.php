@@ -288,9 +288,8 @@ function admin_deleteuser(){
 	$db = new MyDB;
 	$db->query('SELECT * FROM users WHERE id = '.$_GET[id].'');
 	$row = $db->getrow();
-	if ($row[groupid] != 1){
-		$db->query( "UPDATE users set active = 0 WHERE id = " . $_GET[id] . " LIMIT 1" );
-		
+	if ($row[id] != 1){
+		$db->query( "UPDATE users SET active = 0 WHERE id = " . $_GET[id] . " LIMIT 1" );
 		redirect( "admin.php", 0 );
 	}else{
 		//redirect ("admin.php", 4, "", "");
