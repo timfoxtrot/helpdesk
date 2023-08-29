@@ -282,18 +282,18 @@ function admin_activateuser($link){
 }
 //-------------------------------------------------------------------------
 //	URL: 		admin.php?action=deleteuser
-//	Purpose:	Deletes the user
+//	Purpose:	Deletes user
 //-------------------------------------------------------------------------
 function admin_deleteuser(){
 	$db = new MyDB;
 	$db->query('SELECT * FROM users WHERE id = '.$_GET[id].'');
 	$row = $db->getrow();
 	if ($row[groupid] != 1){
-		$db->query( "DELETE FROM users WHERE id = " . $_GET[id] . " LIMIT 1" );
+		$db->query( "UPDATE users set active = 0 WHERE id = " . $_GET[id] . " LIMIT 1" );
 		
 		redirect( "admin.php", 0 );
 	}else{
-		redirect ("admin.php", 4, "NO WAY, JOSE", "YOURE NOT ALLOWED TO DELETE TIM");
+		//redirect ("admin.php", 4, "", "");
 	}
 }
 //-------------------------------------------------------------------------
