@@ -85,7 +85,7 @@ function worklog(){
 	//Disable submit button when clicked
 	echo '<form id="formABC" action="index.php?page=worklogsubmit" method="post">';
 
-	print_r($anti_jill);
+	print_r($greysubmit);
 	
 	//Creating the Form
 	$table->show();
@@ -231,11 +231,11 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	$table->push("<b>Message</b> ", inputtextarea("message", "$message", "70", "9", "$messageclass", "$defaultmessage"));
 	
 	//Disable submit button when clicked
-	$anti_jill = '<form ';
-	if($check == TRUE) $anti_jill .='id="formABC"';
-	$anti_jill .= 'action="index.php?page=submit" method="post">';
+	$greysubmit = '<form ';
+	if($check == TRUE) $greysubmit .='id="formABC"';
+	$greysubmit .= 'action="index.php?page=submit" method="post">';
 
-	print_r($anti_jill);
+	print_r($greysubmit);
 	
 	//Creating the Form
 	$table->show();
