@@ -187,7 +187,7 @@ function email_user($ticketid, $email, $link, $password){
 	
 	$setmessage = "
 		<html>
-		Thank you for using the GMHA Helpdesk Form.<br><br>
+		Thank you for using the GIAA Helpdesk Form.<br><br>
 			
 		Your ticket number is <b>$ticketid</b>.<br><br>
 
@@ -204,7 +204,7 @@ function email_user($ticketid, $email, $link, $password){
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	global $config_from_email;
 	$headers .= 'From: ' . $config_from_email;
-	$subject =  "GMHA Helpdesk";
+	$subject =  "GIAA Helpdesk";
 	
 	$mail = mail($email, $subject, $setmessage, $headers);
 	
@@ -244,12 +244,14 @@ function email_admin($ticketid, $name, $email, $message, $phone, $locationid, $c
 			
 		to view it.<br><br>
 		</html>';
+
+	
 				
 	$adminmessage = wordwrap ( $adminmessage, 300 );
 	$adminheaders  = 'MIME-Version: 1.0' . "\r\n";
 	$adminheaders .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$adminheaders .= 'From: gmhahelpdesk@gmha.org';
-	$adminsubject = "NEW GMHA Helpdesk Ticket";
+	$adminheaders .= 'From: '.$config_from_email.'';
+	$adminsubject = "NEW GIAA Helpdesk Ticket";
 	global $admin_email;
 	$mail = mail ( $admin_email, $adminsubject, $adminmessage, $adminheaders );
 }

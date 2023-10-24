@@ -218,7 +218,7 @@ function admin_solved(){
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	global $config_from_email;
 	$headers .= 'From: ' . $config_from_email;
-	$subject = "[Closed] GMHA Troubleshooting Ticket";
+	$subject = "[Closed] GIAA Ticket";
 	$mail = mail ( $row[email], $subject, $setmessage, $headers );
 	
 	redirect( "admin.php", 0 );
@@ -275,7 +275,7 @@ function admin_activateuser($link){
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	global $config_from_email;
 	$headers .= 'From: ' . $config_from_email;
-	$subject = "GMHA Help Desk Account Activated!";
+	$subject = "GIAA Help Desk Account Activated!";
 	$mail = mail ( $row[email], $subject, $setmessage, $headers );
 	
 	redirect ( "admin.php", 0 );
@@ -301,7 +301,7 @@ function admin_deleteuser(){
 //-------------------------------------------------------------------------
 function admin_resetpw(){
 	
-	$password = "gmha2023";
+	$password = "giaa2023";
 	$newpw 	  =  md5($password);
 
 	$db = new MyDB;
