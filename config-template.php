@@ -26,6 +26,13 @@ function logo(){
 	return $logoimage;
 }
 
+//Helpdesk Message
+function helpdeskmessage(){
+	$message = '';
+
+	return $message;
+}
+
 class MyDB extends CMySql{
 	function __construct(){
 	
@@ -38,7 +45,7 @@ class MyDB extends CMySql{
 	}
 }
 
-function sql_connect(){
+function ticketmysqlconnect(){
 
 	//First we connect to database, then we login and pass, if it cannot connect, produces an error
 
