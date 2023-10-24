@@ -3,18 +3,28 @@
 *	File: 		config.php
 *	Purpose: 	Database configuration file
 *	Author:		Tim Dominguez (timfox@coufu.com)
-*   Date:       1/18/2023
 ******************************************************************************/
 
 
 //Server URL
-$server_url = "IP/helpdesk";
+$server_url = "";
 
 //From email. Set this or email won't send.
-$config_from_email = "changeme@example.com";
+$config_from_email = "";
 
 //Send to email
-$admin_email = "example@example.com";
+$admin_email = "";
+
+//Setting the timezone (for Guam time) for date functions
+date_default_timezone_set( 'Etc/GMT-10' );
+
+//Logo
+function logo(){
+	$logourl   = '';
+	$logoimage = '<img src ="'.$logourl.'" border=0>';
+
+	return $logoimage;
+}
 
 class MyDB extends CMySql{
 	function __construct(){
@@ -28,7 +38,7 @@ class MyDB extends CMySql{
 	}
 }
 
-function ticketmysqlconnect(){
+function sql_connect(){
 
 	//First we connect to database, then we login and pass, if it cannot connect, produces an error
 
