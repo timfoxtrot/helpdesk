@@ -213,7 +213,7 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	$callbacknumber = '<input type="text" name="phonenumber" value="'.$phone.'" id="phonenumber" size="16">';
 
     //Placeholder Message
-    $defaultmessage = "Welcome to the GMHA IT Helpdesk. Please describe your issue with as much detail as possible";
+    $defaultmessage = helpdeskmessage();
 
 	//Setting Values for the Form
 	$table = new CTable;
