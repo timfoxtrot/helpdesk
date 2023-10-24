@@ -52,14 +52,16 @@ function ticket_top ($title = NULL, $width = 600, $refresh = NULL){
             $("#btnTest").attr("disabled", true);
 
             return true; });});</script>';
-	echo "<title>GMHA Help Desk ";
+
+	$logo = logo();
+	echo "<title>GIAA Help Desk ";
 	if($title)	echo "[ $title ]";
 	echo "</title>";
 	echo "</head>";
 	echo "<body>";
 	echo "<center>";
 	$tbl = new Ctable;
-	$tbl->push( array ( "<a href=\"login.php\"><img src=\"gmhalogo.png\" border=0></a>" ) );
+	$tbl->push( array ( "<a href=\"login.php\">$logo</a>" ) );
 	$tbl->show();
 	echo "<br>";
 	
@@ -80,9 +82,9 @@ function ticket_bottom($coolline = NULL, $width = 600){
 		$table->setwidth( "$width" );
 		$table->pushth( " " );
 		$table->show();
-		echo "<br><font size=\"1\"><a href=\"login.php\">&copy;</a>Copyright <a href=\"mailto:timothy-jed.dominguez@gmha.org\">GMHA</a><br>";
+		echo "<br><font size=\"1\"><a href=\"login.php\">&copy;</a>Copyright <a href=\"mailto:tim.dominguez@guamairport.net\">GIAA</a><br>";
 	}else{
-		echo "<br><font size=\"1\"><a href=\"login.php\">&copy;</a>Copyright <a href=\"mailto:timothy-jed.dominguez@gmha.org\">GMHA</a><br>";
+		echo "<br><font size=\"1\"><a href=\"login.php\">&copy;</a>Copyright <a href=\"mailto:tim.dominguez@guamairport.net\">GIAA</a><br>";
 	}
 }	
 
