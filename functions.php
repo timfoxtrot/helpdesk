@@ -26,7 +26,7 @@ function ticket_top ($title = NULL, $width = 600, $refresh = NULL){
 			<link rel="stylesheet" href="/resources/demos/style.css" />
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+			<link rel="stylesheet" href="js\chosen.css">
 			<script>
 				$(function() {
 				$( "#datepicker" ).datepicker();

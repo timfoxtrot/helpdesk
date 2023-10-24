@@ -46,7 +46,7 @@ function worklog(){
 
 	//Locations
 	$location  =  '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
-	$location .=  '<select name="location" class="chzn-select">';
+	$location .=  '<select data-placeholder="Location" name="location" class="chzn-select">';
 	$location .=  '<option value="0"></option>';
 	$db->query('SELECT * FROM locations ORDER by name ASC');
 	while($row = $db->getrow()){
@@ -58,7 +58,7 @@ function worklog(){
 	
 	//Categories
 	$category  = '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
-	$category .= '<select name ="category" class="chzn-select">';
+	$category .= '<select data-placeholder="Category" name ="category" class="chzn-select">';
 	$category .= '<option value = "0"></option>';
 	$db->query('SELECT * FROM categories WHERE active = 1 ORDER by name ASC');
 	while($row = $db->getrow()){
@@ -187,7 +187,7 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 
 	//Locations
 	$location  =  '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
-	$location .=  '<select name="location" class="chzn-select">';
+	$location .=  ' <select data-placeholder="" name="location" class="chzn-select">';
     $location .=  '<option value="0"></option>';
 	$db->query('SELECT * FROM locations ORDER by name ASC');
 	while($row = $db->getrow()){
@@ -199,7 +199,7 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	
 	//Categories
 	$category  = '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
-	$category .= '<select name ="category" class="chzn-select">';
+	$category .= '<select data-placeholder="" name ="category" class="chzn-select">';
     $category .= '<option value = "0"></option>';
 	$db->query('SELECT * FROM categories WHERE active = 1 ORDER by name ASC');
 	while($row = $db->getrow()){

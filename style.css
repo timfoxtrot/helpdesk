@@ -12,3 +12,14 @@ html body center form table tbody tr td input.login {font-size:30px; }
 html body center form table tbody tr td input.password {font-size:30px; }
 html body center form table tbody tr td input.textboxerror{background-color : #ffffff; border: 2px solid #FF0000;}
 html body center form table tbody tr td textarea.textboxerror {background-color : #ffffff; border: 2px solid #FF0000;}
+
+.select,
+.chosen-select,
+.chzn-select,
+.chosen-select-no-single,
+.chosen-select-no-results,
+.chosen-select-deselect,
+.chosen-select-rtl,
+.chosen-select-width {
+  width: 140px;
+}
