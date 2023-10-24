@@ -166,7 +166,7 @@ function usersubmit() {
 	//If there are no errors this adds the user to the database
 	$insert[username] = "$_POST[username]"; 
 	$insert[fullname] = "$_POST[fullname]";
-	$insert[password] = md5( "gmha2023" );
+	$insert[password] = md5( "giaa2023" );
 	$insert[email]	  = "$_POST[email]";
 	$insert[groupid]  = "$_POST[groupid]";	
 	$insert[active]   = "1";
