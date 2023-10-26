@@ -51,7 +51,7 @@ function ticket_login()
 		$table = new Ctable;
 		$table->setwidth( "600" );
 		$table->pushth( " " );
-		$table->push( "<br>GMHA Helpdesk<br><br><b>To Do</b><br>
+		$table->push( "<br>GIAA Helpdesk<br><br><b>To Do</b><br>
 		<ul>
 			<li>Time of unsolved tickets</li>
 			<li>Password to view ticket</li>
