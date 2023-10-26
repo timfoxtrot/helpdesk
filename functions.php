@@ -250,10 +250,11 @@ function email_admin($ticketid, $name, $email, $message, $phone, $locationid, $c
 	$adminmessage = wordwrap ( $adminmessage, 300 );
 	$adminheaders  = 'MIME-Version: 1.0' . "\r\n";
 	$adminheaders .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+	global $config_from_email;
 	$adminheaders .= 'From: '.$config_from_email.'';
-	$adminsubject = "NEW GIAA Helpdesk Ticket";
+	$adminsubject  = "NEW GIAA Helpdesk Ticket";
 	global $admin_email;
-	$mail = mail ( $admin_email, $adminsubject, $adminmessage, $adminheaders );
+	$mail = mail ($admin_email, $adminsubject, $adminmessage, $adminheaders );
 }
 
 //Setting the timezone (for Guam time) for date functions

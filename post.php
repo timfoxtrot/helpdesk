@@ -128,7 +128,7 @@ function submit_data($link) {
 			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 			global $config_from_email;
 			$headers .= 'From: ' . $config_from_email;
-			$subject = "Closed - GMHA Helpdesk";
+			$subject = "Closed - GIAA Helpdesk";
 			$mail = mail ( $row[email], $subject, $setmessage, $headers );
 			
 			redirect( "admin.php", 0 );
@@ -166,7 +166,7 @@ function submit_data($link) {
 				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 				global $config_from_email;
 				$headers .= 'From: ' . $config_from_email;
-				$subject = "Reply - GMHA Helpdesk";
+				$subject = "Reply - GIAA Helpdesk";
 				$mail = mail ( $row2[email], $subject, $setmessage, $headers );
 					
 				//Returning an error if the email didn't send. 
