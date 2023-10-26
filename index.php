@@ -77,7 +77,7 @@ function worklog(){
 	$table->setspacing(0);
 	$table->setcolprops('width="300" bgcolor="ebebeb"', 'width="500"','width="10" bgcolor="ebebeb"');
 	$table->pushth('<b>WORKLOG</b>', '', '' );
-	$table->push('<b>End User:</b>', ''.$inputtext.' <b>Location:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
+	$table->push('<b>End User:</b>', ''.$inputtext.' <b>Division:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
 	//$table->push('<b>UserEmail:</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number:</b> &nbsp;'.$callbacknumber);
 	$table->push('<b>Category:</b>', ''.$category.'');
 	$table->push("<b>Message:</b> ", inputtextarea("message", "$message", "70", "9", "$messageclass"));
@@ -187,7 +187,7 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 
 	//Locations
 	$location  =  '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
-	$location .=  ' <select data-placeholder="" name="location" class="chzn-select">';
+	$location .=  '<select data-placeholder="" name="location" class="chzn-select">';
     $location .=  '<option value="0"></option>';
 	$db->query('SELECT * FROM locations ORDER by name ASC');
 	while($row = $db->getrow()){
@@ -225,7 +225,7 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 	} else {
 		$table->pushth('', '', '' );
 	}
-	$table->push('<b>Name</b>', ''.$inputtext.' <b>Location</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
+	$table->push('<b>Name</b>', ''.$inputtext.' <b>Division</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$location.'', '' );
 	$table->push('<b>Email</b>', ''.inputtext("email", "$email", "25", "", "$emailclass").' <b>Callback Number</b> &nbsp;'.$callbacknumber);
 	$table->push('<b>Category</b>', ''.$category.'');
 	$table->push("<b>Message</b> ", inputtextarea("message", "$message", "70", "9", "$messageclass", "$defaultmessage"));

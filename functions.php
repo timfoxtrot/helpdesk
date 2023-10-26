@@ -21,6 +21,7 @@ function ticket_top ($title = NULL, $width = 600, $refresh = NULL){
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">";
 	echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">";
 	echo '<link rel="stylesheet" href="js/jquery-ui-1.10.2.custom.min.css" />
+	      <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
 			<script src="https://code.jquery.com/jquery-3.6.3.js"></script>
 			<script src="js/jquery-ui-1.10.2.custom.min.js"></script>
 			<link rel="stylesheet" href="/resources/demos/style.css" />
