@@ -111,7 +111,7 @@ function submit_data($link) {
 			
 			//Sending Mail when the ticket is closed
 			$username = getusername($_COOKIE[userid]);
-			$db->query( 'SELECT email FROM tickets WHERE ticketid = '.$_POST[ticketid].'');
+			$db->query( 'SELECT * FROM tickets WHERE ticketid = '.$_POST[ticketid].'');
 			$row = $db->getrow();
 
 			//message
