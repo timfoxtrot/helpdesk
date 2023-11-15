@@ -48,7 +48,7 @@ function worklog(){
 	$location  =  '<script type="text/javascript">$(function() {$(".chzn-select").chosen();});</script>';
 	$location .=  '<select data-placeholder="Location" name="location" class="chzn-select">';
 	$location .=  '<option value="0"></option>';
-	$db->query('SELECT * FROM locations ORDER by name ASC');
+	$db->query('SELECT * FROM locations WHERE active = 1 ORDER by name ASC');
 	while($row = $db->getrow()){
 		$selected = NULL;
 		if($locationid == $row[locationid])	$selected = 'selected="selected"';
