@@ -11,6 +11,7 @@ switch ( $_GET[action] ) {
 	case "submit";			members_only();		usersubmit();		break;
 	case "addcat";      	members_only();     addcat();			break;
 	case "addlocation"; 	members_only();		addlocation();		break;
+	case "deleteloc";		members_only();		deleteloc();		break;
 	case "deletecat";   	members_only();		deletecat();        break;
 	case "assign";			members_only();		assign();			break;
 	case "reassigncat";		members_only();		reassigncat();		break;
@@ -72,7 +73,7 @@ function userdefault() {
 	//Add/Delete Location
 	$location = '<select name="location">';
 	$db = new MyDB;
-	$db->query( 'SELECT * FROM locations ORDER by name ASC' ); 
+	$db->query( 'SELECT * FROM locations WHERE active = 1 ORDER by name ASC' ); 
 	while($row = $db->getrow()){
 		$location .= '<option value ="'.$row[locationid].'">'.$row[name].'</option>';
 	}
@@ -84,7 +85,7 @@ function userdefault() {
 	$table->setwidth(600);
 	$table->pushth( 'Add/Delete Location','' );
 	$table->push ( 'Existing Locations: '.$location.'', ''.$delete.'' );
-	echo "<form action=\"users.php?action=deletecat\" method=\"post\">";
+	echo "<form action=\"users.php?action=deleteloc\" method=\"post\">";
 	$table->show();
 	echo "</form>";
 	
@@ -230,6 +231,16 @@ function addlocation() {
 		$db->insertarray( "locations" , $insert );
 		redirect ('users.php', 0);
 	}	
+}
+
+//-------------------------------------------------------------------------
+//	URL:		users.php?action=deletecat
+//	Purpose:	Deleting a Category
+//-------------------------------------------------------------------------
+function deleteloc(){
+	$db= new MyDB;
+	$result = mysql_query( 'UPDATE locations SET active = 2 WHERE locationid ='.$_POST[location].' LIMIT 1');
+	redirect( 'users.php', 0 );
 }
 
 //-------------------------------------------------------------------------
