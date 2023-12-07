@@ -119,7 +119,7 @@ function loginsubmit()
 	if ($row[id] == 15){ //this is for the GMHIT KIOSK
 		setcookie ( "userid", $row[id], time()+86400*30 ); 
 	} else{
-		setcookie ( "userid", $row[id], time()+86400 ); 
+		setcookie ( "userid", $row[id], time()+86400*14 ); 
 	}
 	
 	
