@@ -123,22 +123,22 @@ function worklogsubmit($link){
 	$password		= strtoupper(substr(md5(time()), -4));
 
 	//inserting database
-	$insertitem[active]     = 1;
-	$insertitem[name]		= $name;
-	$insertitem[email]		= $email;
-	$insertitem[phonenumber]= $phone;
-	$insertitem[location]   = $location;
-	$insertitem[category]   = $category;
-	$insertitem[message]	= $message;
-	$insertitem[newstatus]  = 0;
-	$insertitem[level] 		= 2;
-	$insertitem[solved]		= 2;
-	$insertitem[ip]  		= $ipadd;
-	$insertitem[datecreated]= $datecreated;
-	$insertitem[assignedto] = $assignedto;
-	$insertitem[datesolved] = "";
-	$insertitem[whosolved]  = "";
-	$insertitem[password]   = $password;
+	$insertitem[active]    					 = 1;
+	$insertitem[name]						 = $name;
+	$insertitem[email]						 = $email;
+	$insertitem[phonenumber]				 = $phone;
+	$insertitem[location]   				 = $location;
+	$insertitem[category]   				 = $category;
+	$insertitem[message]  	                 = preg_quote($message);
+	$insertitem[newstatus] 					 = 0;
+	$insertitem[level] 						 = 2;
+	$insertitem[solved]						 = 2;
+	$insertitem[ip]  						 = $ipadd;
+	$insertitem[datecreated]				 = $datecreated;
+	$insertitem[assignedto] 				 = $assignedto;
+	$insertitem[datesolved] 				 = "";
+	$insertitem[whosolved]  				 = "";
+	$insertitem[password]   				 = $password;
 
 	//Connecting to Database
 	$db = new MyDB;
@@ -334,7 +334,7 @@ function submit($link){
 		$insertitem[phonenumber]= $phone;
 		$insertitem[location]   = $location;
 		$insertitem[category]   = $category;
-		$insertitem[message]	= $message;
+		$insertitem[message]	= preg_quote($message);
 		$insertitem[newstatus]  = 0;
 		$insertitem[level] 		= 2;
 		$insertitem[solved]		= 2;
