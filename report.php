@@ -60,7 +60,7 @@ if($_POST){
 
         //database
         ticketmysqlconnect();
-        $result = mysql_query( "SELECT * FROM tickets WHERE datecreated between $startdate AND $enddate");
+        $result = mysql_query( "SELECT * FROM tickets WHERE datecreated between $startdate AND $enddate AND active = 1");
         $user_arr = array();
 
         while($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
