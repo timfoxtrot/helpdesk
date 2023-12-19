@@ -81,7 +81,7 @@ if($_POST){
             $division    = getlocationname($row[location]);
             $category    = getcategoryname($row[category]);
             $ip_address  = $row[ip];
-            $message     = $row[message];
+            $message     = str_replace(array("\r", "\n"), '', $row[message]);
             $status      = getstatus($row[solved]);
             
             $user_arr[] = array($ticketid,$datecreated, $datesolved, $whosolved, $name, $email, $phonenumber, $division, $category, $ip_address, $message, $status);
