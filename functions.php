@@ -180,6 +180,14 @@ function getcategoryname( $id ){
 	return $categoryname;
 }
 
+//status name
+function getstatus($id){
+	if($id == 1) $status = "CLOSED";
+	if($id == 2) $status = "OPEN";
+	
+	return $status;
+}
+
 //Emailing Users
 function email_user($ticketid, $email, $link, $password){
 	
@@ -287,7 +295,6 @@ function viewticket_protection($ticketid, $ticketpass){
 	}
 }
 
-//debuginfo();
 //Calculating time differences (for ticket duration purposes)
 function timeDiff($firstTime,$lastTime,$value = NULL){
 
