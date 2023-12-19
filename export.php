@@ -4,7 +4,7 @@ $filename = 'helpdesktickets.csv';
 $export_data = unserialize($_POST['export_data']);
 
 // Create File
-$file = fopen($filename,"w");
+$file = fopen($filename,"w+");
 
 $headers = ["TICKETID", "DATE_CREATED", "DATE_SOLVED", "WHO_SOLVED", "NAME", "EMAIL", "PHONE_NUMBER", "DIVISION", "CATEGORY", "IP_ADDRESS", "MESSAGE", "STATUS"];
 fputcsv($file,$headers);
