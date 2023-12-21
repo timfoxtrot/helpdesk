@@ -71,6 +71,11 @@ if($_POST){
                 $datesolved = NULL;
             }
 
+            //remove line break
+            $message     = str_replace(array("\r", "\n"), '', $row[message]);
+            //remove comma
+            $message     = str_replace(',', '', $message);
+
             $ticketid    = $row[ticketid];
             $datecreated = date('m/d/y, g:ia', $row[datecreated]);
             //$datesolved  = date('m/d/y, g:ia', $row[datesolved]);
@@ -81,9 +86,7 @@ if($_POST){
             $division    = getlocationname($row[location]);
             $category    = getcategoryname($row[category]);
             $ip_address  = $row[ip];
-            $message     = str_replace(array("\r", "\n"), '', $row[message]);
             $status      = getstatus($row[solved]);
-            
             $user_arr[] = array($ticketid,$datecreated, $datesolved, $whosolved, $name, $email, $phonenumber, $division, $category, $ip_address, $message, $status);
             
             ?>
