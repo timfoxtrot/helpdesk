@@ -1,0 +1,7 @@
+name: timfox-helpdesk
+recipe: lamp
+config:
+  webroot: .
+services:
+  appserver:
+    type: php:5.4
