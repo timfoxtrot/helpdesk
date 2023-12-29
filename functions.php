@@ -67,7 +67,7 @@ function ticket_top ($title = NULL, $width = 600, $refresh = NULL){
 	echo "<br>";
 	
 	//Navigation (Only appears if the user is logged in)
-	if( $_COOKIE[userid] ){
+	if( $_COOKIE['userid'] ){
 		$username = getusername( $_COOKIE[userid] );
 		$table = new Ctable;
 		$table->setwidth( "$width" );
