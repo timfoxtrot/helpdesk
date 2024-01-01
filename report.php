@@ -44,7 +44,9 @@ if($_POST){
                 <tr>
                     <th>TICKET_ID</th>
                     <th>DATE_CREATED</th>
+                    <th>DATE_CREATED_FORMAT</th>
                     <th>DATE_SOLVED</th>     
+                    <th>DATE_SOLVED_FORMAT</th>     
                     <th>WHO_SOLVED</th>
                     <th>NAME</th>
                     <th>EMAIL</th>
@@ -66,9 +68,11 @@ if($_POST){
         while($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
 
             if($row[datesolved]){
-                $datesolved = date('m/d/y, g:ia', $row[datesolved]);
+                $datesolved       = $row[datesolved];
+                $datesolvedformat = date('m/d/y, g:ia', $row[datesolved]);
             } else{
-                $datesolved = NULL;
+                $datesolved       = NULL;
+                $datesolvedformat = NULL;
             }
 
             //remove line break
@@ -77,7 +81,8 @@ if($_POST){
             $message     = str_replace(',', '', $message);
 
             $ticketid    = $row[ticketid];
-            $datecreated = date('m/d/y, g:ia', $row[datecreated]);
+            $datecreated = $row[datecreated];
+            $datecreatedformat = date('m/d/y, g:ia', $row[datecreated]);
             //$datesolved  = date('m/d/y, g:ia', $row[datesolved]);
             $whosolved   = getusername($row[whosolved]);
             $name        = $row[name];
@@ -93,7 +98,9 @@ if($_POST){
                 <tr>
                     <td><?php echo $ticketid; ?></td>
                     <td><?php echo $datecreated; ?></td>
+                    <td><?php echo $datecreatedformat; ?></td>
                     <td><?php echo $datesolved; ?></td> 
+                    <td><?php echo $datesolvedformat; ?></td> 
                     <td><?php echo $whosolved; ?></td>                   
                     <td><?php echo $name; ?></td>
                     <td><?php echo $email; ?></td>
