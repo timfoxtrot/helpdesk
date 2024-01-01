@@ -37,7 +37,7 @@ function report(){
 	$table->pushth ( '<b>Report by Date</b>');
 	$table->push('<b>Start Date:</b>',''.$startdate.'' );
 	$table->push('<b>End Date:</b>',''.$enddate.'' );
-	echo '<form action="report.php?action=date" method="post">';
+	echo '<form action="report_old.php?action=date" method="post">';
 	$table->show();
 	addcoolline(600);
 	echo "<input type=\"submit\" value=\"Submit Dates\" /> ";
@@ -59,7 +59,7 @@ function report(){
 	$table->setwidth(600);
 	$table->pushth( 'Report by Category','' );
 	$table->push ( 'Existing Categories: '.$category.'', ''.$submit.'' );
-	echo '<form action="report.php?action=category" method="post">';
+	echo '<form action="report_old.php?action=category" method="post">';
 	$table->show();
 	echo "</form>";
 	addcoolline(600);
