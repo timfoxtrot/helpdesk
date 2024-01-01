@@ -92,7 +92,7 @@ if($_POST){
             $category    = getcategoryname($row[category]);
             $ip_address  = $row[ip];
             $status      = getstatus($row[solved]);
-            $user_arr[] = array($ticketid,$datecreated, $datesolved, $whosolved, $name, $email, $phonenumber, $division, $category, $ip_address, $message, $status);
+            $user_arr[] = array($ticketid,$datecreated,$datecreatedformat, $datesolved, $datesolvedformat, $whosolved, $name, $email, $phonenumber, $division, $category, $ip_address, $message, $status);
             
             ?>
                 <tr>
