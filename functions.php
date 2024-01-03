@@ -55,7 +55,8 @@ function ticket_top ($title = NULL, $width = 600, $refresh = NULL){
             return true; });});</script>';
 
 	$logo = logo();
-	echo "<title>GIAA Help Desk ";
+    global $main_title;
+	echo "<title>$main_title";
 	if($title)	echo "[ $title ]";
 	echo "</title>";
 	echo "</head>";

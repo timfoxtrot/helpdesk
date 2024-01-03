@@ -5,18 +5,20 @@
  *	Author:		Tim Dominguez (timfox@coufu.com)
  ******************************************************************************/
 
-
 //Server URL
 $server_url = "";
 
-//From email. Set this or email won't send.
+//FROM email. Set this or email won't send.
 $config_from_email = "";
 
-//Send to email
+//Email notifications of new tickets
 $admin_email = "";
 
 //Org Name
 $org_name = "";
+
+//Site title
+$main_title = "";
 
 //Setting the timezone (for Guam time) for date functions
 date_default_timezone_set( 'Etc/GMT-10' );
