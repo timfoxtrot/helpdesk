@@ -1,9 +1,9 @@
 <?php
 /*****************************************************************************
-*	File: 		config.php
-*	Purpose: 	Database configuration file
-*	Author:		Tim Dominguez (timfox@coufu.com)
-******************************************************************************/
+ *	File: 		config.php
+ *	Purpose: 	Database configuration file
+ *	Author:		Tim Dominguez (timfox@coufu.com)
+ ******************************************************************************/
 
 
 //Server URL
@@ -15,56 +15,57 @@ $config_from_email = "";
 //Send to email
 $admin_email = "";
 
+//Org Name
+$org_name = "";
+
 //Setting the timezone (for Guam time) for date functions
 date_default_timezone_set( 'Etc/GMT-10' );
 
 //Logo
 function logo(){
-	$logourl   = '';
-	$logoimage = '<img src ="'.$logourl.'" border=0>';
+    $logourl   = 'corgi.png';
+    $logoimage = '<img src ="'.$logourl.'" border=0>';
 
-	return $logoimage;
+    return $logoimage;
 }
 
 //Helpdesk Message
 function helpdeskmessage(){
-	$message = '';
+    $message = '';
 
-	return $message;
+    return $message;
 }
 
+//Sql connect class
 class MyDB extends CMySql{
-	function __construct(){
-	
-		$this->hostname = '';
-		$this->username = '';
-		$this->password = '';
-		$this->database = '';
-		
-		CMySql::__construct();
-	}
+    function __construct(){
+
+        $this->hostname = '';
+        $this->username = '';
+        $this->password = '';
+        $this->database = '';
+
+        CMySql::__construct();
+    }
 }
 
+//legacy mysqlconnect
 function ticketmysqlconnect(){
 
-	//First we connect to database, then we login and pass, if it cannot connect, produces an error
+    $hostname = 'database';
+    $username = '';
+    $password = '';
+    $database = '';
 
-	$hostname = '';
-	$username = '';
-	$password = '';
-	$database = '';
+    $link = mysql_connect( $hostname, $username, $password );
+    if (!$link){
+        die ('Could not connect: ' . mysql_error());
+    }
+    $select_db = mysql_select_db( $database, $link);
+    if (!$select_db){
+        die ('Could not select: ' . mysql_error());
+    }
 
-	$link = mysql_connect( $hostname, $username, $password );
-	if (!$link){
-		die ('Could not connect: ' . mysql_error()); 
-	}
-	
-	//This selects the database, and if it cannot connect, produces an error	
-	$select_db = mysql_select_db( $database, $link);
-	if (!$select_db){
-		die ('Could not select: ' . mysql_error());
-	}
-
-	return $link;
+    return $link;
 }
 ?>

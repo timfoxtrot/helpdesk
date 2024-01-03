@@ -78,14 +78,18 @@ function ticket_top ($title = NULL, $width = 600, $refresh = NULL){
 
 //Displays Bottom of the Page
 function ticket_bottom($coolline = NULL, $width = 600){
+    global $admin_email;
+    global $org_name;
+
 	if ($coolline){
 		$table = new Ctable;
 		$table->setwidth( "$width" );
 		$table->pushth( " " );
 		$table->show();
-		echo "<br><font size=\"1\"><a href=\"login.php\">&copy;</a>Copyright <a href=\"mailto:tim.dominguez@guamairport.net\">GIAA</a><br>";
+
+		echo "<br><font size=\"1\"><a href=\"login.php\">&copy;</a>Copyright <a href=\"mailto:$admin_email\">$org_name</a><br>";
 	}else{
-		echo "<br><font size=\"1\"><a href=\"login.php\">&copy;</a>Copyright <a href=\"mailto:tim.dominguez@guamairport.net\">GIAA</a><br>";
+		echo "<br><font size=\"1\"><a href=\"login.php\">&copy;</a>Copyright <a href=\"mailto:$admin_email\">$org_name</a><br>";
 	}
 }	
 

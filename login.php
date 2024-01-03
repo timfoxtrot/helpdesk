@@ -6,30 +6,23 @@
 *	Author:		Tim Dominguez (timfox@coufu.com)
 ******************************************************************************/
 
-ob_start();
-
 include "functions.php";
 
-switch ( $_GET[action] )
-{
+switch ($_GET[action]){
 	default:				ticket_login();		break;
 	case "submit";			loginsubmit();		break;
 	case "register";		register_form();	break;
 	case "registersubmit";	register_submit();	break;	
 	case "logout";			logoutsubmit();		break;
-	
-	
 }
 
 //-------------------------------------------------------------------------
 //	URL: 		login.php
 //	Purpose:	Uhh..to login.
 //-------------------------------------------------------------------------
-function ticket_login()
-{
-	ticket_top( "Login" );
-	if( !$_COOKIE[userid] )
-	{
+function ticket_login(){
+	ticket_top("Login");
+	if( !$_COOKIE[userid]) {
 		$table = new Ctable;
 		$table->pushth( "ADMIN LOGIN" );
 		$table->push( '<font size="5">username</font>', inputtext( "username", '',0,0, "login"));
@@ -46,21 +39,7 @@ function ticket_login()
 		
 		ticket_bottom();
 	}
-	else
-	{	
-		$table = new Ctable;
-		$table->setwidth( "600" );
-		$table->pushth( " " );
-		$table->push( "<br>GIAA Helpdesk<br><br><b>To Do</b><br>
-		<ul>
-			<li>Time of unsolved tickets</li>
-			<li>Password to view ticket</li>
-			<li>SOP</li>
-
-		</ul>
-		" );
-		$table->show();
-		
+	else {
 		ticket_bottom( "y" );
 	}
 }
@@ -69,8 +48,7 @@ function ticket_login()
 //	Purpose:	Queries the database (table: users) and sets a cookie if the
 //				username and password match
 //-------------------------------------------------------------------------
-function loginsubmit()
-{
+function loginsubmit(){
 
 	//Connecting to the Database
 	$db = new MyDB;
@@ -88,8 +66,7 @@ function loginsubmit()
 	if ( $row[active] != 1 ) 					array_push( $errors, "You are not an active user" );
 	
 	//Stopping the script if errors exist
-	if ( $errors ) 
-	{
+	if ($errors){
 		ticket_top( "Error Logging In" );
 		
 		$table = new Ctable;
@@ -98,13 +75,13 @@ function loginsubmit()
 		$table->show();
 		
 		//Printing List of Errors
-		foreach ( $errors as $error ) 
-		{
+		foreach ($errors as $error){
 			echo "<li>$error \n";
 			echo "<br><br>";
 			ticket_bottom();
-			exit; //the kill command hehe
+			exit;
 		}
+
 		ticket_bottom();
 	} 
 
@@ -115,14 +92,13 @@ function loginsubmit()
 	$db = new MyDB;
 	$db->insertarray("log", $insertlog);
 	
-	//Setting the cookie..Yummy.
-	if ($row[id] == 15){ //this is for the GMHIT KIOSK
+	//Setting COokie
+	if ($row[id] == 15){ //this is for the KIOSK
 		setcookie ( "userid", $row[id], time()+86400*30 ); 
 	} else{
 		setcookie ( "userid", $row[id], time()+86400*14 ); 
 	}
-	
-	
+
 	//Redirecting
 	redirect( "admin.php", 0 , "Login Success", "" );
 	
@@ -238,8 +214,7 @@ function register_submit()
 //	Purpose:	Logs out the user by overriding their current cookie
 //				with a cookie that has no value
 //-------------------------------------------------------------------------
-function logoutsubmit()
-{
+function logoutsubmit(){
 	setcookie( "userid" );
 	redirect( "index.php", 0, "Logout Successful", "" );
 }
