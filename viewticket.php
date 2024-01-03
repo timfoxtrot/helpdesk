@@ -89,7 +89,7 @@ if ($_COOKIE[userid] ){
 	$table->setwidth(300);
 	$table->pushth( 'Assign to User','' );
 	$table->push ( 'Existing Users: '.$useroption.'', ''.$submit.'' );
-	echo '<form action="users.php?action=assign" method="post">';
+	echo '<form action="settings.php?action=assign" method="post">';
 	$table->show();
 	echo '<input type="hidden" name="id" value="'.$_GET[id].'">';
 	echo "</form>";
@@ -115,7 +115,7 @@ if($_COOKIE[userid]){
 	$table->setwidth(300);
 	$table->pushth('Reassign Category', '');
 	$table->push('Categories:'.$category_option.'',''.$category_submit.'');	
-	echo '<form action="users.php?action=reassigncat" method="post">';
+	echo '<form action="settings.php?action=reassigncat" method="post">';
 	$table->show();
 	echo '<input type="hidden" name="id" value="'.$_GET[id].'">';
 	echo "</form>";

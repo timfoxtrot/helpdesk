@@ -1,6 +1,6 @@
 <?php
 /*****************************************************************************
-*	File: 		users.php
+*	File: 		settings.php
 *	Purpose: 	Contains pages that deal with user management.
 *	Author:		Tim Dominguez (timfox@coufu.com)
 ******************************************************************************/
@@ -19,7 +19,7 @@ switch ( $_GET[action] ) {
 	
 }
 //-------------------------------------------------------------------------
-//	URL:		users.php
+//	URL:		settings.php
 //	Purpose:	User control
 //-------------------------------------------------------------------------
 function userdefault() {
@@ -31,8 +31,8 @@ function userdefault() {
 	$table->pushth( "Change Password" );
 	$table->push ( "New Password: ", inputpw( "password" ) );
 	$table->push ( "Retype Password: ", inputpw( "password2" ) );
-	
-	echo "<form action=\"users.php?action=changepw\" method=\"post\">";
+
+    echo "<form action=\"settings.php?action=changepw\" method=\"post\">";
 	$table->show();
 	addcoolline(600);
 	echo "<input type=\"submit\" value=\"Change Password\" /> ";
@@ -55,14 +55,14 @@ function userdefault() {
 	$table->setwidth(600);
 	$table->pushth( 'Add/Delete Categories','' );
 	$table->push ( 'Existing Categories: '.$category.'', ''.$delete.'' );
-	echo "<form action=\"users.php?action=deletecat\" method=\"post\">";
+    echo "<form action=\"settings.php?action=deletecat\" method=\"post\">";
 	$table->show();
 	echo "</form>";
 	
 	$table = new CTable; 
 	$table->setwidth(600);
 	$table->push ( 'New Category: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.inputtext('newcategory','',28).''.$add.'' );
-	echo "<form action=\"users.php?action=addcat\" method=\"post\">";
+    echo "<form action=\"settings.php?action=addcat\" method=\"post\">";
 	$table->show();
 	echo "</form>";
 	addcoolline(600);
@@ -85,14 +85,14 @@ function userdefault() {
 	$table->setwidth(600);
 	$table->pushth( 'Add/Delete Location','' );
 	$table->push ( 'Existing Locations: '.$location.'', ''.$delete.'' );
-	echo "<form action=\"users.php?action=deleteloc\" method=\"post\">";
+    echo "<form action=\"settings.php?action=deleteloc\" method=\"post\">";
 	$table->show();
 	echo "</form>";
 	
 	$table = new CTable; 
 	$table->setwidth(600);
 	$table->push ( 'New Location: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.inputtext('newlocation','',28).''.$add.'' );
-	echo "<form action=\"users.php?action=addlocation\" method=\"post\">";
+    echo "<form action=\"settings.php?action=addlocation\" method=\"post\">";
 	$table->show();
 	echo "</form>";
 	addcoolline(600);
@@ -102,8 +102,7 @@ function userdefault() {
 	
 	
 	
-	if ( getusergroupid( $_COOKIE[userid] ) == 1 )
-	{
+	if ( getusergroupid( $_COOKIE[userid] ) == 1 ) {
 		$groups = "<select name=\"groupid\"><option value=\"1\">Admin</option><option value=\"2\">Helpdesk</option></select>";
 		$table = new CTable;
 		$table->setwidth(600);
@@ -113,7 +112,7 @@ function userdefault() {
 		$table->push ( "Email: ", inputtext( "email" ) );
 		$table->push ( "Group: ", $groups  );
 
-		echo "<form action=\"users.php?action=submit\" method=\"post\">";
+        echo "<form action=\"settings.php?action=submit\" method=\"post\">";
 		$table->show();
 		addcoolline(600);
 		echo "<input type=\"submit\" value=\"Add User\" /> ";
@@ -122,8 +121,7 @@ function userdefault() {
 	}
 	
 	echo "<br><br>";
-	if ( getusergroupid( $_COOKIE[userid] ) == 1 )
-	{
+	if ( getusergroupid( $_COOKIE[userid] ) == 1 ) {
 		ticketmysqlconnect();
 		$result1 = mysql_query ( "SELECT * FROM users WHERE active ='1'");
 		
@@ -144,7 +142,7 @@ function userdefault() {
 }
 
 //-------------------------------------------------------------------------
-//	URL:		users.php?action=submit
+//	URL:		settings.php?action=submit
 //	Purpose:	Submits data and adds user to database
 //-------------------------------------------------------------------------
 function usersubmit() {
@@ -179,13 +177,13 @@ function usersubmit() {
 	echo "Added";
 }
 //-------------------------------------------------------------------------
-//	URL:		users.php?action=changepw
+//	URL:		settings.php?action=changepw
 //	Purpose:	Change current password
 //-------------------------------------------------------------------------
 function changepw() {
 	if ($_POST[password] != $_POST[password2])
 	{
-		redirect( "users.php", 2, "Error", "Passwords don't match" );
+		redirect( "settings.php", 2, "Error", "Passwords don't match" );
 		exit;
 	}	
 	else
@@ -194,17 +192,17 @@ function changepw() {
 		$db = new MyDB;
 		$result = mysql_query ( "UPDATE users SET password = '$newpass' WHERE id = '$_COOKIE[userid]' LIMIT 1");
 		
-		redirect ( "users.php", 0, "Success", "You have successfully changed your password" );
+		redirect ( "settings.php", 0, "Success", "You have successfully changed your password" );
 	}
 
 }
 //-------------------------------------------------------------------------
-//	URL:		users.php?action=addcat
+//	URL:		settings.php?action=addcat
 //	Purpose:	Adding a Category
 //-------------------------------------------------------------------------
 function addcat() {
 	if (!$_POST[newcategory]){
-		redirect ('users.php', 2, 'Error', 'No Fields');
+		redirect ('settings.php', 2, 'Error', 'No Fields');
 		exit;
 	}
 	else{
@@ -212,49 +210,49 @@ function addcat() {
 		$insert[active] = 1; 
 		$db = new MyDB;
 		$db->insertarray( "categories" , $insert );
-		redirect ('users.php', 0);
+		redirect ('settings.php', 0);
 	}	
 }
 
 //-------------------------------------------------------------------------
-//	URL:		users.php?action=addlocation
+//	URL:		settings.php?action=addlocation
 //	Purpose:	Adding a Location
 //-------------------------------------------------------------------------
 function addlocation() {
 	if (!$_POST[newlocation]){
-		redirect ('users.php', 2, 'Error', 'No Fields');
+		redirect ('settings.php', 2, 'Error', 'No Fields');
 		exit;
 	}
 	else{
 		$insert[name]   = ''.$_POST[newlocation].'';
 		$db = new MyDB;
 		$db->insertarray( "locations" , $insert );
-		redirect ('users.php', 0);
+		redirect ('settings.php', 0);
 	}	
 }
 
 //-------------------------------------------------------------------------
-//	URL:		users.php?action=deletecat
+//	URL:		settings.php?action=deletecat
 //	Purpose:	Deleting a Category
 //-------------------------------------------------------------------------
 function deleteloc(){
 	$db= new MyDB;
 	$result = mysql_query( 'UPDATE locations SET active = 2 WHERE locationid ='.$_POST[location].' LIMIT 1');
-	redirect( 'users.php', 0 );
+	redirect( 'settings.php', 0 );
 }
 
 //-------------------------------------------------------------------------
-//	URL:		users.php?action=deletecat
+//	URL:		settings.php?action=deletecat
 //	Purpose:	Deleting a Category
 //-------------------------------------------------------------------------
 function deletecat(){
 	$db= new MyDB;
 	$result = mysql_query( 'UPDATE categories SET active = 2 WHERE categoryid ='.$_POST[category].' LIMIT 1');
-	redirect( 'users.php', 0 );
+	redirect( 'settings.php', 0 );
 }
 
 //-------------------------------------------------------------------------
-//	URL:		users.php?action=assign
+//	URL:		settings.php?action=assign
 //	Purpose:	Assigning User to Ticket
 //-------------------------------------------------------------------------
 function assign(){
@@ -264,7 +262,7 @@ function assign(){
 }	
 
 //-------------------------------------------------------------------------
-//	URL:		users.php?action=assigncategory
+//	URL:		settings.php?action=assigncategory
 //	Purpose:	reassigning category
 //-------------------------------------------------------------------------
 function reassigncat(){

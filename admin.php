@@ -307,7 +307,7 @@ function admin_resetpw(){
 	$db = new MyDB;
 	$db->query ("UPDATE users SET password = '$newpw' WHERE id = '$_GET[id]'");
 	
-	redirect ("users.php", 0, "Success", "The password has been reset to $password");
+	redirect ("settings.php", 0, "Success", "The password has been reset to $password");
 }
 ?>
 

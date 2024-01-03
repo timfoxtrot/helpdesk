@@ -71,7 +71,7 @@ function ticket_top ($title = NULL, $width = 600, $refresh = NULL){
 		$username = getusername( $_COOKIE[userid] );
 		$table = new Ctable;
 		$table->setwidth( "$width" );
-		$table->push( "Hello, <b>$username</b>", "<p align=\"right\"><a href=\"index.php\">Home</a> | <a href=\"index.php?page=worklog\">Worklog</a> | <a href=\"admin.php\">Tickets</a> | <a href=\"users.php\">Settings</a> | <a href=\"report.php\">Reports</a> | <a href=\"login.php?action=logout\">Logout</a>" );		
+        $table->push( "Hello, <b>$username</b>", "<p align=\"right\"><a href=\"index.php\">Home</a> | <a href=\"index.php?page=worklog\">Worklog</a> | <a href=\"admin.php\">Tickets</a> | <a href=\"settings.php\">Settings</a> | <a href=\"report.php\">Reports</a> | <a href=\"login.php?action=logout\">Logout</a>" );
 		$table->show();
 	}
 }
