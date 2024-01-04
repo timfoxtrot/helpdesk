@@ -37,9 +37,9 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 //--------------------------------------------------------------------------------
 // 	Definitions
-define( NL,			"<br />\n" );
-define( REFERER,		$_SERVER['HTTP_REFERER'] );
-define( SELF,			$_SERVER['PHP_SELF'] );
+define( 'NL',			"<br />\n" );
+define( 'REFERER',		$_SERVER['HTTP_REFERER'] );
+define( 'SELF',			$_SERVER['PHP_SELF'] );
 
 //--------------------------------------------------------------------------------
 //	Functions
@@ -1381,15 +1381,18 @@ class CMySQL
 		
 		/* Connecting to the database */
 		$this->link =	 
-			mysql_connect(
+			mysqli_connect(
 				$hostname,
 				$username,
 				$password
-			) or error( mysql_error() );
+			) or error( mysqli_error($this->link) );
 
 		/* Selecting the database */
-		mysql_select_db( $database ) or error( mysql_error() );
-		
+		mysqli_select_db( $this->link, $database ) or error( mysqli_error($this->link) );
+	}
+
+	function getLink() {
+		return $this->link;
 	}
 
 	/**********************************************************************
@@ -1416,21 +1419,22 @@ class CMySQL
 		$query = str_replace( "\t", " ", $query );
 
 
-		$this->result = mysql_query( $query, $this->link )
-							or error( "Error performing the following query:<br><br>$query<br><br> " . mysql_error() );
+		$this->result = mysqli_query( $this->link, $query )
+							or error( "Error performing the following query:<br><br>$query<br><br> " . mysqli_error($this->link) );
 
 		/* If it was a select statement, get the number of rows returned */
 		if( preg_match( "/^[s][e][l][e][c][t]/i", $query ) )
 		{
 			/* Getting the number of rows */
-			$this->numrows = mysql_num_rows( $this->result );
+			$this->numrows = mysqli_num_rows( $this->result );
 
 			/* Getting the number of fields */
-			$this->numfields = mysql_num_fields( $this->result );
+			$this->numfields = mysqli_num_fields( $this->result );
 
 			/* Getting the name of the fields */
-			for( $i = 0; $i < $this->numfields; $i++ )
-				$this->fields[$i] = mysql_field_name( $this->result, $i );
+			for( $i = 0; $i < $this->numfields; $i++ ) {
+				$this->fields[$i] = mysqli_fetch_field_direct($this->result, $i)->name;
+			}
 		}
 
 		/* Setting the last query */
@@ -1632,9 +1636,9 @@ class CMySQL
 	//	Purpose:	Get the row from the result. Use like:
 	//				while( $row = $db->getrow() )
 	//-------------------------------------------------------------------------
-	function getrow( $type = MYSQL_BOTH )
+	function getrow( $type = MYSQLI_BOTH )
 	{
-		$row = mysql_fetch_array( $this->result, $type );
+		$row = mysqli_fetch_array( $this->result, $type );
 		if( is_array( $row ) ) $row = stripslashesfromarray( $row );
 		return $row;
 	}
@@ -2157,7 +2161,7 @@ class CTable
 		/*** ADDING THE REST OF THE TABLE INFORMATION <TD>'S HERE ***/
 		/************************************************************/
 		/* Getting the number of alternating table row styles */
-		$numalttrs = sizeof( $this->altrows );
+		$numalttrs = is_countable($this->altrows) ? count( $this->altrows ) : 0;
 
 		for( $i = 0; $i < $this->numrows; $i++ )
 		{

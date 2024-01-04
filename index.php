@@ -8,7 +8,7 @@
 include 'functions.php';
 
 //Page Handling
-switch ( $_GET[page] ){
+switch ( $_GET['page'] ){
 	case 'submit';		  submit($server_url);					 			 break;
 	case 'worklog';	      members_only(); 		worklog();					 break;
 	case 'worklogsubmit'; members_only();		worklogsubmit($server_url);  break;
@@ -171,17 +171,25 @@ function submissionform( $name = NULL, $email = NULL, $phone = NULL, $message = 
 
 	//Pending Tickets
 	$db      = new MyDB;
-	$pending = mysql_query( "SELECT * FROM tickets WHERE solved='2' AND active='1'");
-	$pending = mysql_num_rows($pending);
-	
+    $db_link = $db->getLink();
+//    var_dump($db_link);die();
+	$pending = mysqli_query($db_link, "SELECT * FROM tickets WHERE solved='2' AND active='1'");
+    if ($pending) {
+        $pending = mysqli_num_rows($pending);
+    }
+
 	//Urgent Tickets
-	$urgent = mysql_query ("SELECT * FROM tickets WHERE level ='1' AND solved ='2' AND active='1'");
-	$urgent = mysql_num_rows($urgent);
-	
+	$urgent = mysqli_query ($db_link, "SELECT * FROM tickets WHERE level ='1' AND solved ='2' AND active='1'");
+    if ($urgent) {
+        $urgent = mysqli_num_rows($urgent);
+    }
+
 	//Solved
-	$solved = mysql_query("SELECT * FROM tickets WHERE solved ='1' AND active='1'");
-	$solved = mysql_num_rows($solved);
-	
+	$solved = mysqli_query($db_link, "SELECT * FROM tickets WHERE solved ='1' AND active='1'");
+    if ($solved) {
+        $solved = mysqli_num_rows($solved);
+    }
+
 	//Text Box
 	$inputtext = inputtext( 'name', ''.$name.'', '25','', ''.$nameclass.'');
 

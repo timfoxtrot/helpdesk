@@ -4,4 +4,4 @@ config:
   webroot: .
 services:
   appserver:
-    type: php:5.4
+    type: php:7.4
