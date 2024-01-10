@@ -20,7 +20,7 @@ $org_name = "";
 //Site title
 $main_title = "";
 
-//Setting the timezone (for Guam time) for date functions
+//Setting the timezone (Guam time default) for date functions
 date_default_timezone_set( 'Etc/GMT-10' );
 
 //Logo
