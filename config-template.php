@@ -54,7 +54,7 @@ class MyDB extends CMySql{
 //legacy mysqlconnect
 function ticketmysqlconnect(){
 
-    $hostname = 'database';
+    $hostname = '';
     $username = '';
     $password = '';
     $database = '';
