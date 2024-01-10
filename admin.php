@@ -301,7 +301,7 @@ function admin_deleteuser(){
 //-------------------------------------------------------------------------
 function admin_resetpw(){
 	
-	$password = "giaa2023";
+	$password = "password";
 	$newpw 	  =  md5($password);
 
 	$db = new MyDB;
