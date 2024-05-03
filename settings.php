@@ -224,7 +224,7 @@ function addlocation() {
 		exit;
 	}
 	else{
-		$insert[name]   = ''.$_POST[newlocation].'';
+		$insert[name]   = ''.$_POST[newlocation].'1';
 		$db = new MyDB;
 		$db->insertarray( "locations" , $insert );
 		redirect ('settings.php', 0);
